@@ -1,0 +1,38 @@
+version: '3.7'
+services: 
+
+  backend:
+    build: ./backend
+    image: pageocr:backend
+    container_name: pageocr-backend-container
+    ports:
+      - 8881:8881
+
+  frontend:
+    build: ./frontend
+    image: pageocr:frontend
+    container_name: pageocr-frontend-container
+    ports:
+      - 5500:5500
+    depends_on:
+      - backend
+
+
+  # db:
+  #   image: mongo:latest
+  #   container_name: mongodb
+  #   user: 1000:1000
+  #   ports:
+  #     - 27017:27017
+  #   volumes: 
+  #     - /home/krishna/mongodb/db:/data/db
+
+  # minio:
+  #   image: minio/minio:latest
+  #   container_name: minio
+  #   command: server /data --console-address ":9001"
+  #   ports:
+  #     - 9000:9000
+  #     - 9001:9001
+  #   volumes:
+  #     - /data:/data

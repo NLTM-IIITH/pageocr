@@ -1,0 +1,9 @@
+# backend
+fastapi
+uvicorn
+requests
+python-multipart
+Pillow
+
+# dev
+ipython
