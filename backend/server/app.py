@@ -11,17 +11,15 @@ app = FastAPI(
 )
 
 
-@app.post('/pageocr', tags=['Page OCR'], response_class=PlainTextResponse)
+@app.post('/pageocr', tags=['Page OCR'], response_model=PageOCRResponse)
 async def perform_page_level_ocr(
 	image: UploadFile = File(...)
-) -> str:
+):
 	image_path = save_uploaded_image(image)
-	print(image_path)
+	print(f'Saved the image at {image_path}')
 	regions = call_layout_parser(image_path)
-	print(regions)
+	print(f'{len(regions)} word regions detected by layout-parser')
 	path = crop_regions(image_path, regions)
-	print(path)
+	print(f'Saved the cropped word images at: {path}')
 	ocr_output = perform_ocr(path)
-	print(len(regions))
-	print(len(ocr_output))
 	return format_ocr_output(ocr_output, regions)
