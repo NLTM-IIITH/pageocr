@@ -3,6 +3,8 @@ import os
 import requests
 from flask import Flask, render_template, request
 
+from .config import STATIC_IMAGE_FOLDER
+
 app = Flask(__name__)
 app.config.update(
 	DEBUG = True,
@@ -12,8 +14,7 @@ app.config.update(
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-	images_path = '/home/krishna/pageocr/frontend/static/images'
-	images = os.listdir(images_path)
+	images = os.listdir(STATIC_IMAGE_FOLDER)
 	images = [i for i in images if i.endswith('jpg')]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
@@ -23,7 +24,7 @@ def index():
 @app.route('/page', methods=['GET', 'POST'])
 def page():
 	image = request.args.get('image').strip()
-	image = os.path.join('/home/krishna/pageocr/frontend/static/images/',image)
+	image = os.path.join(STATIC_IMAGE_FOLDER, image)
 	print(image)
 	r = requests.post(
 		'http://10.4.16.103:8881/pageocr',
