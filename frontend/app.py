@@ -17,7 +17,8 @@ app.config.update(
 @app.route('/', methods=["GET", "POST"])
 def index():
 	images = os.listdir(STATIC_IMAGE_FOLDER)
-	images = [i for i in images if i.endswith('jpg')]
+	# removing the 0.jpg from the list as it is only there for git reference
+	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
 	return render_template('index.html', images=images)
