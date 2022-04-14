@@ -11,6 +11,7 @@ from fastapi import UploadFile
 from PIL import Image
 
 from .config import IMAGE_FOLDER
+from .models import PageOCRResponse, Region
 
 
 def call_layout_parser(image_path: str) -> List[Dict[str, int]]:
@@ -109,7 +110,12 @@ def format_ocr_output(ocr: List[str], regions: List[Dict[str, Any]]) -> str:
 			ret.append(' '.join(tmp_line))
 			tmp_line = [text]
 	ret = [i.strip() for i in ret]
-	return '\n'.join(ret).strip()
+	ret = '\n'.join(ret).strip()
+	regions = [Region(**i) for i in regions]
+	return PageOCRResponse(
+		text=ret,
+		regions=regions
+	)
 
 
 def save_uploaded_image(image: UploadFile) -> str:

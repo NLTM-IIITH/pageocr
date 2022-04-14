@@ -41,7 +41,7 @@ def page():
 		]
 	)
 	print(r.status_code)
-	text = r.text.strip()
+	text = r.json()['text']
 	print(text)
 	return render_template('page.html', image=os.path.basename(image), text=text)
 
