@@ -1,10 +1,11 @@
+import json
 import os
 from os.path import basename, join
 
 import requests
 from flask import Flask, render_template, request
 
-from .config import STATIC_IMAGE_FOLDER
+from config import STATIC_IMAGE_FOLDER, STATIC_LAYOUT_FOLDER
 
 app = Flask(__name__)
 app.config.update(
@@ -43,6 +44,17 @@ def page():
 		]
 	)
 	print(r.status_code)
+	layout_location = join(
+		STATIC_LAYOUT_FOLDER,
+		f'{basename(image).split(".")[0]}.json'
+	)
+	with open(layout_location, 'w+', encoding='utf-8') as f:
+		json.dump(
+			r.json(),
+			f,
+			ensure_ascii=False,
+			indent=4
+		)
 	text = r.json()['text']
 	print(text)
 	return render_template('page.html', image=basename(image), text=text)
