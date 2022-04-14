@@ -1,4 +1,5 @@
 import os
+from os.path import basename, join
 
 import requests
 from flask import Flask, render_template, request
@@ -24,7 +25,7 @@ def index():
 @app.route('/page', methods=['GET', 'POST'])
 def page():
 	image = request.args.get('image').strip()
-	image = os.path.join(STATIC_IMAGE_FOLDER, image)
+	image = join(STATIC_IMAGE_FOLDER, image)
 	print(image)
 	r = requests.post(
 		'http://10.4.16.103:8881/pageocr',
@@ -34,7 +35,7 @@ def page():
 			(
 				'image',
 				(
-					os.path.basename(image),
+					basename(image),
 					open(image, 'rb'),
 					'image/jpeg',
 				)
@@ -44,7 +45,7 @@ def page():
 	print(r.status_code)
 	text = r.json()['text']
 	print(text)
-	return render_template('page.html', image=os.path.basename(image), text=text)
+	return render_template('page.html', image=basename(image), text=text)
 
 
 if __name__ == '__main__':
