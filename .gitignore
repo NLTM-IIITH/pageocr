@@ -144,3 +144,13 @@ staticfiles
 
 # custom files and folders to exclude
 backend/images
+
+# ignore all the json files in layouts folder except the 0.json to maintain
+# the proper folder structure
+frontend/static/layouts/*/*.json
+!frontend/static/layouts/*/0.json
+
+# ignore all the jpg files in layouts folder except the 0.jpg to maintain
+# the proper folder structure
+frontend/static/images/*/*
+!frontend/static/images/*/0.jpg
