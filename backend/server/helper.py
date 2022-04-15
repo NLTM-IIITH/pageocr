@@ -109,6 +109,8 @@ def format_ocr_output(ocr: List[str], regions: List[Dict[str, Any]]) -> str:
 			prev_line = line
 			ret.append(' '.join(tmp_line))
 			tmp_line = [text]
+	# this is so that the last line is also included in the ret
+	ret.append(' '.join(tmp_line))
 	ret = [i.strip() for i in ret]
 	ret = '\n'.join(ret).strip()
 	regions = [Region(**i) for i in regions]
