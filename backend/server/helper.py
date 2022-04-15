@@ -10,7 +10,7 @@ import requests
 from fastapi import UploadFile
 from PIL import Image
 
-from .config import IMAGE_FOLDER
+from .config import IMAGE_FOLDER, LANGUAGES
 from .models import PageOCRResponse, Region
 
 
@@ -62,7 +62,7 @@ def crop_regions(image_path: str, regions: List[Dict[str, Any]]) -> str:
 	return ret
 
 
-def perform_ocr(path) -> List[str]:
+def perform_ocr(path: str, language: str) -> List[str]:
 	"""
 	call the ocr API on all the images inside the path folder
 	"""
@@ -74,12 +74,10 @@ def perform_ocr(path) -> List[str]:
 		'image': [{'imageContent': i} for i in a],
 		'config': {
 			'language': {
-				'sourceLanguage': 'hi'
+				'sourceLanguage': LANGUAGES[language]
 			}
 		}
 	}
-	# with open('test.txt', 'w') as f:
-	# 	f.write(json.dumps(ocr_request))
 	url = "http://bhasha.iiit.ac.in/ocr/v0/printed"
 	response = requests.post(url, headers={
 		'Content-Type': 'application/json'

@@ -1,5 +1,6 @@
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import PlainTextResponse
+from typing import Optional
+
+from fastapi import FastAPI, File, Form, UploadFile
 
 from .helper import *
 from .models import *
@@ -13,7 +14,8 @@ app = FastAPI(
 
 @app.post('/pageocr', tags=['Page OCR'], response_model=PageOCRResponse)
 async def perform_page_level_ocr(
-	image: UploadFile = File(...)
+	image: UploadFile = File(...),
+	language: Optional[str] = Form('hindi')
 ):
 	image_path = save_uploaded_image(image)
 	print(f'Saved the image at {image_path}')
@@ -21,5 +23,5 @@ async def perform_page_level_ocr(
 	print(f'{len(regions)} word regions detected by layout-parser')
 	path = crop_regions(image_path, regions)
 	print(f'Saved the cropped word images at: {path}')
-	ocr_output = perform_ocr(path)
+	ocr_output = perform_ocr(path, language)
 	return format_ocr_output(ocr_output, regions)
