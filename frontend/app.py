@@ -27,12 +27,15 @@ def index():
 @app.route('/page', methods=['GET', 'POST'])
 def page():
 	image = request.args.get('image').strip()
+	language = request.args.get('language', 'hindi').strip()
 	image = join(STATIC_IMAGE_FOLDER, image)
 	print(image)
 	r = requests.post(
 		'http://10.4.16.103:8881/pageocr',
 		headers={},
-		data={},
+		data={
+			'language': language
+		},
 		files=[
 			(
 				'image',
