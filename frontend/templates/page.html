@@ -19,6 +19,50 @@
   <link href="/static/css/page.css" rel="stylesheet">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    window.onload = function() {
+      var c = document.getElementById('mycanvas');
+      var ctx = c.getContext('2d');
+      var img = document.getElementById('image');
+      ctx.drawImage(img, 0, 0, 350, 600);
+    }
+    $(document).ready(function() {
+      $(document).mouseup(function() {
+        console.log('mouse up detected');
+        if (window.getSelection) {
+          let a = window.getSelection()
+          if (a.isCollapsed) return;
+          console.log('selection detected')
+          let start = Math.min(a.anchorOffset, a.focusOffset);
+          let end = Math.max(a.anchorOffset, a.focusOffset);
+          console.log(start, end)
+          $.ajax({
+            url: '/position',
+            type: "get",
+            data: {
+              "image": "{{ image }}",
+              "language": "{{ language }}",
+              "start": start,
+              "end": end
+            },
+            success: function(result) {
+              console.log(result);
+              var c = document.getElementById('mycanvas');
+              var ctx = c.getContext('2d');
+              var img = document.getElementById('image');
+              ctx.clearRect(0,0, c.width, c.height);
+              ctx.drawImage(img, 0, 0, 350, 600);
+              ctx.beginPath();
+              ctx.fillStyle = 'rgba(49,102,235,0.3)'
+              // ctx.rect(result.x, result.y, result.w, result.h);
+              ctx.fillRect(result.x, result.y, result.w, result.h);
+              ctx.stroke();
+            }
+          })
+        }
+      });
+    });
+  </script>
 </head>
 
 <body>
@@ -40,12 +84,13 @@
     <div class="row">
       <div class="col-6">
         <center>
-          <img class="img-responsive" src="/static/images/{{ language }}/{{ image }}" alt="" width="350">
+          <img class="img-responsive d-none" id="image" src="/static/images/{{ language }}/{{ image }}" alt="" width="350">
+          <canvas id="mycanvas" width="350" height="600" style="border: 1px solid black;"></canvas>
         </center>
       </div>
       <div class="col-6">
         <center>
-          <pre style="font-size: larger;">{{ text }}</pre>
+          <pre id="text" style="font-size: larger;">{{ text }}</pre>
         </center>
       </div>
     </div>

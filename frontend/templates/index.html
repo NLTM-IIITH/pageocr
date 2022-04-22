@@ -37,10 +37,10 @@
     <div class="container">
       <div class="accordion" id="accordionExample">
         {% for language in language_list %}
-        <div class="card">
+        <div class="card mt-1">
           <div class="card-header" id="heading_{{ language.name }}">
             <button class="btn btn-link btn-block text-left" style="font-size: larger;" type="button" data-toggle="collapse" data-target="#collapse_{{ language.name }}" aria-expanded="false" aria-controls="collapse_{{ language.name }}">
-              Printed - {{ language.name }}
+              Printed - {{ language.name|title }}
             </button>
           </div>
           <div id="collapse_{{ language.name }}" class="collapse" aria-labelledby="heading_{{ language.name }}" data-parent="#accordionExample">
