@@ -41,7 +41,7 @@ def index():
 def page():
 	image = request.args.get('image').strip()
 	language = request.args.get('language', 'hindi').strip()
-	image = join(STATIC_IMAGE_FOLDER, image)
+	image = join(STATIC_IMAGE_FOLDER, language, image)
 	print(image)
 	r = requests.post(
 		'http://10.4.16.103:8881/pageocr',
@@ -63,6 +63,7 @@ def page():
 	print(r.status_code)
 	layout_location = join(
 		STATIC_LAYOUT_FOLDER,
+		language,
 		f'{basename(image).split(".")[0]}.json'
 	)
 	with open(layout_location, 'w+', encoding='utf-8') as f:
@@ -74,7 +75,12 @@ def page():
 		)
 	text = r.json()['text']
 	print(text)
-	return render_template('page.html', image=basename(image), text=text)
+	return render_template(
+		'page.html',
+		image=basename(image),
+		text=text,
+		language=language,
+	)
 
 
 if __name__ == '__main__':
