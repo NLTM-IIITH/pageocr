@@ -1,6 +1,7 @@
 import json
 import os
 from os.path import basename, join
+from typing import List
 
 import requests
 from flask import Flask, render_template, request
@@ -14,14 +15,26 @@ app.config.update(
 )
 
 
-@app.route('/', methods=["GET", "POST"])
-def index():
-	images = os.listdir(STATIC_IMAGE_FOLDER)
+def get_image_list(language: str) -> List:
+	print(f'getting all the images for language: {language}')
+	path = join(STATIC_IMAGE_FOLDER, language)
+	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
 	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
-	return render_template('index.html', images=images)
+	return images
+
+
+
+@app.route('/', methods=["GET", "POST"])
+def index():
+	language_list = [{
+		'name': i,
+		'image_list': get_image_list(i)
+	} for i in os.listdir(STATIC_IMAGE_FOLDER)]
+	print(language_list)
+	return render_template('index.html', language_list=language_list)
 
 
 @app.route('/page', methods=['GET', 'POST'])

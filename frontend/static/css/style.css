@@ -4,15 +4,15 @@
 .call-row{
   max-height: 150px;
 }
-.card{
+/* .card{
 	width: 6rem;
-}
+} */
 a:hover{
   cursor:pointer;
 }
-.card img{
+/* .card img{
 	max-width: 20px;
-}
+} */
 .feedback ul,li{
   display: inline-block;
   margin:0 10px;
