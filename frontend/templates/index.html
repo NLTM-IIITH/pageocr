@@ -17,8 +17,8 @@
   <!-- Main Stylesheet File -->
   <link href="/static/css/style.css" rel="stylesheet">
   <link href="/static/css/index.css" rel="stylesheet">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <script>
     $(document).ready(function() {
       $('.loader-wrapper').click(function() {
@@ -35,17 +35,30 @@
     </center>
     <br> <br>
     <div class="container">
-      <center class="h3">Printed - Hindi</center>
-      <hr>
-      <div class="outer">
-        {% for image in images %}
-        <div class="inner m-2">
-          <div class="loader-wrapper">
-            <a href="/page?image={{ image }}">
-              <img class="img-responsive border border-info rounded" src="/static/images/hindi/{{ image }}" alt="" width="250">
-            </a>
-            <div class="loader">
-              <span></span>
+      <div class="accordion" id="accordionExample">
+        {% for language in language_list %}
+        <div class="card">
+          <div class="card-header" id="heading_{{ language.name }}">
+            <button class="btn btn-link btn-block text-left" style="font-size: larger;" type="button" data-toggle="collapse" data-target="#collapse_{{ language.name }}" aria-expanded="false" aria-controls="collapse_{{ language.name }}">
+              Printed - {{ language.name }}
+            </button>
+          </div>
+          <div id="collapse_{{ language.name }}" class="collapse" aria-labelledby="heading_{{ language.name }}" data-parent="#accordionExample">
+            <div class="card-body">
+              <div class="outer">
+                {% for image in language.image_list %}
+                <div class="inner m-2">
+                  <div class="loader-wrapper">
+                    <a href="/page?image={{ image }}&language={{ language.name }}">
+                      <img class="img-responsive border border-info rounded" src="/static/images/{{ language.name }}/{{ image }}" alt="" width="250">
+                    </a>
+                    <div class="loader">
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
             </div>
           </div>
         </div>
