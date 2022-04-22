@@ -4,7 +4,8 @@ from os.path import basename, join
 from typing import List
 
 import requests
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
+from PIL import Image
 
 from config import STATIC_IMAGE_FOLDER, STATIC_LAYOUT_FOLDER
 
@@ -35,6 +36,65 @@ def index():
 	} for i in os.listdir(STATIC_IMAGE_FOLDER)]
 	print(language_list)
 	return render_template('index.html', language_list=language_list)
+
+
+def get_coordinates(text, start, end):
+	text = text.strip()
+	while text[start-1] not in ['\n', ' '] and start>0:
+		start -= 1
+	# line number where selection is: starting from 1
+	lineno = len(text[:start].split('\n'))
+	# index of the starting word (from 0)
+	wstart = text[:start].split('\n')[-1].strip().split(' ')
+	if wstart == ['']:
+		wstart = 0
+	else:
+		wstart = len(wstart)
+	# index of the ending word (from 0)
+	wend = len(text[:end].strip().split('\n')[-1].strip().split(' '))
+	return (lineno, wstart, wend)
+
+def combine_bbox(a):
+	xmin = min([i['x'] for i in a])
+	xmax = max([i['x']+i['w'] for i in a])
+	ymin = min([i['y'] for i in a])
+	ymax = max([i['y']+i['h'] for i in a])
+	return (xmin, ymin, xmax-xmin, ymax-ymin)
+
+
+@app.route('/position', methods=['GET'])
+def get_word_position():
+	image = request.args.get('image').strip()
+	language = request.args.get('language', 'hindi').strip()
+	start = int(request.args.get('start').strip())
+	end = int(request.args.get('end').strip())
+	image_location = join(STATIC_IMAGE_FOLDER, language, image)
+	img = Image.open(image_location)
+	width, height = img.width, img.height
+	wratio = 350 / width
+	hratio = 600 / height
+	json_location = join(STATIC_LAYOUT_FOLDER, language, image.replace('jpg','json'))
+	a = json.load(open(json_location, 'r'))
+	line, start, end = get_coordinates(a['text'], start, end)
+	print(line, start, end)
+	a = [i for i in a['regions'] if i['line'] == line]
+	print(a)
+	a = [i['bounding_box'] for i in a[start:end]]
+	print(a)
+	a = combine_bbox(a)
+	x,y,w,h = a
+	x = int(x*wratio)
+	y = int(y*hratio)
+	w = int(w*wratio)
+	h = int(h*hratio)
+	print(x,y,w,h)
+	a = {
+		'x': x,
+		'y': y,
+		'w': w,
+		'h': h
+	}
+	return jsonify(a)
 
 
 @app.route('/page', methods=['GET', 'POST'])
