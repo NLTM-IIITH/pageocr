@@ -73,10 +73,10 @@
     <br><br>
     <div class="row">
       <div class="col" style="display: flex; align-items: center;">
-        <a href="{{ url_for('index') }}" class="btn btn-primary">Back</a>
+        <a href="{{ url_for('images') }}?language={{ language }}" class="btn btn-primary">Back</a>
       </div>
       <div class="col">
-        <center class="h3">Printed - {{ language }}</center>
+        <center class="h3">Printed - {{ language|title }} - {{ image }}</center>
       </div>
       <div class="col"></div>
     </div>

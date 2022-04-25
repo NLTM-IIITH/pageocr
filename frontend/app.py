@@ -36,6 +36,16 @@ def index():
 	)
 
 
+@app.route('/images', methods=['GET'])
+def images():
+	language = request.args.get('language', 'hindi')
+	return render_template(
+		'images.html',
+		language=language,
+		image_list=get_image_list(language)
+	)
+
+
 def get_coordinates(text, start, end):
 	text = text.strip()
 	while text[start-1] not in ['\n', ' '] and start>0:
