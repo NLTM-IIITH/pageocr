@@ -62,9 +62,22 @@ def crop_regions(image_path: str, regions: List[Dict[str, Any]]) -> str:
 	return ret
 
 
+def load_model(language: str):
+	"""
+	Calls the ocr api load model endpoint with the language param
+	"""
+	url = f'http://bhasha.iiit.ac.in/ocr/v0/load?modality=printed&language={language}'
+	response = requests.post(url)
+	return response.ok
+
+
 def perform_ocr(path: str, language: str) -> List[str]:
 	"""
 	call the ocr API on all the images inside the path folder
+
+	Because when selecting the language from the index page. we call the
+	the concerned ocr model is loaded into the beforehand, so we specify
+	the preloaded=true by default in the ocr api url
 	"""
 	a = os.listdir(path)
 	a = sorted(a, key=lambda x:int(x.strip().split('.')[0]))
@@ -78,7 +91,7 @@ def perform_ocr(path: str, language: str) -> List[str]:
 			}
 		}
 	}
-	url = "http://bhasha.iiit.ac.in/ocr/v0/printed"
+	url = "http://bhasha.iiit.ac.in/ocr/v0/printed?preloaded=true"
 	response = requests.post(url, headers={
 		'Content-Type': 'application/json'
 	}, data=json.dumps(ocr_request))

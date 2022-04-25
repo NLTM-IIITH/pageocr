@@ -39,6 +39,11 @@ def index():
 @app.route('/images', methods=['GET'])
 def images():
 	language = request.args.get('language', 'hindi')
+	loadocr = request.args.get('loadocr', False)
+	if loadocr:
+		print(f'making a request in backend to load the {language} ocr model')
+		r = requests.post(f'http://10.4.16.103:8881/load_ocr?language={language}')
+		print(r.status_code)
 	return render_template(
 		'images.html',
 		language=language,
