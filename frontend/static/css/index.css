@@ -1,41 +1,15 @@
-.outer {
+.language {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
-.loader-wrapper{
-  display: inline-block;
-  position: relative;
+.language > .card {
+  width: 20%;
 }
 
-.loader-wrapper .loader{
-  display: none;
-  background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-.loader-wrapper.loading .loader{
-  display: block;
-}
-.loader-wrapper .loader span{
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: orange;
-  left: 50%;
-  top: 50%;
-  margin-left: -10px;
-  margin-top: -10px;
-  animation: zoom 1s ease infinite;
-}
-
-@keyframes zoom{
-  0%{ transform: scale(1);}  
-  50%{ transform: scale(2);}
-  100%{ transform: scale(1);}
+.language .card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
