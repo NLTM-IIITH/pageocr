@@ -1,10 +1,26 @@
-.outer {
+/* .outer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+} */
+
+.language {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.loader-wrapper{
+.language > .card {
+  width: 20%;
+}
+
+.language .card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+/* .loader-wrapper{
   display: inline-block;
   position: relative;
 }
@@ -38,4 +54,4 @@
   0%{ transform: scale(1);}  
   50%{ transform: scale(2);}
   100%{ transform: scale(1);}
-}
+} */

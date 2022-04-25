@@ -30,12 +30,10 @@ def get_image_list(language: str) -> List:
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-	language_list = [{
-		'name': i,
-		'image_list': get_image_list(i)
-	} for i in os.listdir(STATIC_IMAGE_FOLDER)]
-	print(language_list)
-	return render_template('index.html', language_list=language_list)
+	return render_template(
+		'index.html',
+		language_list=os.listdir(STATIC_IMAGE_FOLDER)
+	)
 
 
 def get_coordinates(text, start, end):

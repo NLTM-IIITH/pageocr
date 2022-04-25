@@ -35,6 +35,20 @@
     </center>
     <br> <br>
     <div class="container">
+      <h4 class="text-center">Select a language to continue</h4>
+      <div class="language">
+        {% for language in language_list %}
+        <div class="card h-100 m-3">
+          <a href="">
+            <div class="card-body">
+              <center class="card-title h3">{{ language|title }}</center>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- <div class="container">
       <div class="accordion" id="accordionExample">
         {% for language in language_list %}
         <div class="card mt-1">
@@ -64,7 +78,7 @@
         </div>
         {% endfor %}
       </div>
-    </div>
+    </div> -->
     <br>
     <footer class="footer">
       <p>Copyright &copy 2022 Internation Institute of Information Technology,Hyderabad.All rights reserved</p>
