@@ -25,3 +25,16 @@ async def perform_page_level_ocr(
 	print(f'Saved the cropped word images at: {path}')
 	ocr_output = perform_ocr(path, language)
 	return format_ocr_output(ocr_output, regions)
+
+
+@app.post('/load_ocr', tags=['Helper'])
+async def load_ocr_model(
+	language: str
+):
+	"""
+	This is the API endpoint to load the given language ocr model to memory
+	this endpoint directly calls the "/ocr/v0/load"
+	"""
+	print(f'Loading the {language} OCR model.')
+	load_model(language)
+	return {'detail': 'Model loaded'}
