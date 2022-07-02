@@ -15,6 +15,8 @@ app.config.update(
 	SECRET_KEY = 'secret_xyz'
 )
 
+PREFIX = '/pageocr'
+
 
 def get_image_list(language: str) -> List:
 	print(f'getting all the images for language: {language}')
@@ -28,7 +30,7 @@ def get_image_list(language: str) -> List:
 
 
 
-@app.route('/', methods=["GET", "POST"])
+@app.route(PREFIX + '/', methods=["GET", "POST"])
 def index():
 	return render_template(
 		'index.html',
@@ -36,7 +38,7 @@ def index():
 	)
 
 
-@app.route('/images', methods=['GET'])
+@app.route(PREFIX + '/images', methods=['GET'])
 def images():
 	language = request.args.get('language', 'hindi')
 	loadocr = request.args.get('loadocr', False)
@@ -75,7 +77,7 @@ def combine_bbox(a):
 	return (xmin, ymin, xmax-xmin, ymax-ymin)
 
 
-@app.route('/position', methods=['GET'])
+@app.route(PREFIX + '/position', methods=['GET'])
 def get_word_position():
 	image = request.args.get('image').strip()
 	language = request.args.get('language', 'hindi').strip()
@@ -110,7 +112,7 @@ def get_word_position():
 	return jsonify(a)
 
 
-@app.route('/page', methods=['GET', 'POST'])
+@app.route(PREFIX + '/page', methods=['GET', 'POST'])
 def page():
 	image = request.args.get('image').strip()
 	language = request.args.get('language', 'hindi').strip()

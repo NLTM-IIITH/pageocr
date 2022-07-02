@@ -23,7 +23,7 @@ def call_layout_parser(image_path: str) -> List[Dict[str, int]]:
 	url = "http://10.4.16.103:8888/layout"
 	files=[
 		(
-			'image',
+			'images',
 			(
 				basename(image_path),		# filename
 				open(image_path,'rb'),		# file object
@@ -37,7 +37,7 @@ def call_layout_parser(image_path: str) -> List[Dict[str, int]]:
 		data={},
 		files=files
 	)
-	return response.json()['regions']
+	return response.json()[0]['regions']
 
 
 def crop_regions(image_path: str, regions: List[Dict[str, Any]]) -> str:
