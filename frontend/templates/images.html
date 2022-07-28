@@ -15,8 +15,8 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
     integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <!-- Main Stylesheet File -->
-  <link href="/pageocr/{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-  <link href="/pageocr/{{ url_for('static', filename='css/images.css') }}" rel="stylesheet">
+  <link href="/dococr/{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  <link href="/dococr/{{ url_for('static', filename='css/images.css') }}" rel="stylesheet">
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <script>
@@ -52,7 +52,7 @@
         <div class="inner m-2">
           <div class="loader-wrapper">
             <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}">
-              <img class="img-responsive border border-info rounded" src="/pageocr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
+              <img class="img-responsive border border-info rounded" src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
             </a>
             <div class="loader">
               <span></span>

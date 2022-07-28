@@ -15,7 +15,7 @@ app.config.update(
 	SECRET_KEY = 'secret_xyz'
 )
 
-PREFIX = '/pageocr'
+PREFIX = '/dococr'
 
 
 def get_image_list(language: str) -> List:
