@@ -84,19 +84,17 @@ def perform_ocr(path: str, language: str) -> List[str]:
 	a = [join(path, i) for i in a if i.endswith('jpg')]
 	a = [base64.b64encode(open(i, 'rb').read()).decode() for i in a]
 	ocr_request = {
-		'image': [{'imageContent': i} for i in a],
-		'config': {
-			'language': {
-				'sourceLanguage': LANGUAGES[language]
-			}
-		}
+		'imageContent': a,
+		'modality': 'printed',
+		'language': LANGUAGES[language],
+		'version': 'v0',
 	}
-	url = "http://bhasha.iiit.ac.in/ocr/v0/printed?preloaded=true"
+	url = "http://bhasha.iiit.ac.in/ocr/infer"
 	response = requests.post(url, headers={
 		'Content-Type': 'application/json'
 	}, data=json.dumps(ocr_request))
-	ret = response.json()['output']
-	ret = [i['source'] for i in ret]
+	ret = response.json()
+	ret = [i['text'] for i in ret]
 	return ret
 
 
