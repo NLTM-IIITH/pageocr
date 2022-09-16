@@ -19,8 +19,10 @@
   <link href="/dococr/{{ url_for('static', filename='css/images.css') }}" rel="stylesheet">
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
   <script>
     $(document).ready(function() {
+      lazyload();
       $('.loader-wrapper').click(function() {
         $(this).addClass('loading');
       })
@@ -52,7 +54,29 @@
         <div class="inner m-2">
           <div class="loader-wrapper">
             <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}">
-              <img class="img-responsive border border-info rounded" src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
+              <img class="img-responsive border border-info rounded lazyload" data-src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
+            </a>
+            <div class="loader">
+              <span></span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="container">
+      <hr>
+      <hr>
+      <center>
+        <h3 title="Images that are carefully selected to minimize the layout segmentation errors to highlight the OCR performance">Curated Images</h3>
+      </center>
+      <hr><hr>
+      <div class="outer">
+        {% for image in ravi_image_list %}
+        <div class="inner m-2">
+          <div class="loader-wrapper">
+            <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}">
+              <img class="img-responsive border border-info rounded lazyload" data-src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
             </a>
             <div class="loader">
               <span></span>

@@ -24,10 +24,22 @@ def get_image_list(language: str) -> List:
 	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
 	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
+	images = [i for i in images if int(i.strip().split('.')[0])<1000]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
 	return images
 
+
+def get_ravi_images(language: str) -> List:
+	print(f'getting all the images for language: {language}')
+	path = join(STATIC_IMAGE_FOLDER, language)
+	images = os.listdir(path)
+	# removing the 0.jpg from the list as it is only there for git reference
+	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
+	images = [i for i in images if int(i.strip().split('.')[0])>1000]
+	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
+	print(images)
+	return images
 
 
 @app.route(PREFIX + '/', methods=["GET", "POST"])
@@ -42,14 +54,15 @@ def index():
 def images():
 	language = request.args.get('language', 'hindi')
 	loadocr = request.args.get('loadocr', False)
-	if loadocr:
-		print(f'making a request in backend to load the {language} ocr model')
-		r = requests.post(f'http://10.4.16.103:8881/load_ocr?language={language}')
-		print(r.status_code)
+	# if loadocr:
+	# 	print(f'making a request in backend to load the {language} ocr model')
+	# 	r = requests.post(f'http://10.4.16.103:8881/load_ocr?language={language}')
+	# 	print(r.status_code)
 	return render_template(
 		'images.html',
 		language=language,
-		image_list=get_image_list(language)
+		image_list=get_image_list(language),
+		ravi_image_list=get_ravi_images(language),
 	)
 
 
@@ -116,6 +129,16 @@ def get_word_position():
 def page():
 	image = request.args.get('image').strip()
 	language = request.args.get('language', 'hindi').strip()
+	if int(image.strip().split('.')[0]) > 1000:
+		print('hello')
+		text = open(join(STATIC_LAYOUT_FOLDER, language, image.replace('jpg', 'json'))).read().strip()
+		text = json.loads(text)['text']
+		return render_template(
+			'page.html',
+			image=image,
+			text=text,
+			language=language,
+		)
 	image = join(STATIC_IMAGE_FOLDER, language, image)
 	print(image)
 	r = requests.post(
