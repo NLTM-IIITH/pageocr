@@ -16,11 +16,13 @@
     integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <!-- Main Stylesheet File -->
   <link href="/dococr/{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-  <link href="/dococr/{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+  <link href="/dococr/{{ url_for('static', filename='css/images.css') }}" rel="stylesheet">
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
   <script>
     $(document).ready(function() {
+      lazyload();
       $('.loader-wrapper').click(function() {
         $(this).addClass('loading');
       })
@@ -31,19 +33,35 @@
 <body>
   <div class="container">
     <center class="mt-4">
-      <span class="h1" style="color: #018db4">DocumentOCR Demo</span>
+      <a href="{{ url_for('index') }}">
+        <span class="h1" style="color: #018db4">DocumentOCR Demo</span>
+      </a>
     </center>
     <br> <br>
+    <div class="row">
+      <div class="col" style="display: flex; align-items: center;">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Back</a>
+      </div>
+      <div class="col"></div>
+      <div class="col"></div>
+    </div>
+    <hr>
     <div class="container">
-      <h4 class="text-center">Select a language/project to continue</h4>
-      <div class="language">
-        {% for language in language_list %}
-        <div class="card h-100 m-3">
-          <a href="{{ url_for('images') }}?language={{ language }}">
-            <div class="card-body">
-              <center class="card-title h3">{{ language|title }}</center>
+      <center>
+        <h3 title="Dipti maa'm project images from pdf">Dipti Images</h3>
+      </center>
+      <hr><hr>
+      <div class="outer">
+        {% for image in image_list %}
+        <div class="inner m-2">
+          <div class="loader-wrapper">
+            <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}">
+              <img class="img-responsive border border-info rounded lazyload" data-src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
+            </a>
+            <div class="loader">
+              <span></span>
             </div>
-          </a>
+          </div>
         </div>
         {% endfor %}
       </div>
