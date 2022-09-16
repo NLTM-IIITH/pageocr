@@ -39,7 +39,7 @@
       <div class="language">
         {% for language in language_list %}
         <div class="card h-100 m-3">
-          <a href="{{ url_for('images') }}?language={{ language }}&loadocr=true">
+          <a href="{{ url_for('images') }}?language={{ language }}">
             <div class="card-body">
               <center class="card-title h3">{{ language|title }}</center>
             </div>
