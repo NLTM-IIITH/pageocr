@@ -13,7 +13,7 @@ LANGUAGES = {
 	'punjabi': 'pa',
 	'bengali': 'bn',
 	'malayalam': 'ml',
-	'assamese': 'as',
+	'assamese': 'asa',
 	'manipuri': 'mni',
 	'oriya': 'ori',
 	'urdu': 'ur',
