@@ -48,7 +48,16 @@ def get_dipti_images() -> List:
 	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
 	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
-	# images = [i for i in images if int(i.strip().split('.')[0])<1000]
+	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
+	print(images)
+	return images
+
+def get_yojna_images() -> List:
+	print(f'getting all the images for dipti')
+	path = join(STATIC_IMAGE_FOLDER, 'yojna')
+	images = os.listdir(path)
+	# removing the 0.jpg from the list as it is only there for git reference
+	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
 	return images
@@ -70,6 +79,12 @@ def images():
 			'dipti_images.html',
 			language=language,
 			image_list=get_dipti_images(),
+		)
+	elif language == 'yojna':
+		return render_template(
+			'yojna_images.html',
+			language=language,
+			image_list=get_yojna_images(),
 		)
 	else:
 		return render_template(
@@ -160,7 +175,7 @@ def page():
 		'http://10.4.16.103:8881/pageocr',
 		headers={},
 		data={
-			'language': language
+			'language': 'hindi' if language == 'yojna' else language
 		},
 		files=[
 			(

@@ -88,7 +88,7 @@ def perform_ocr(path: str, language: str) -> List[str]:
 		'imageContent': a,
 		'modality': 'printed',
 		'language': LANGUAGES[language],
-		'version': 'v2',
+		'version': 'v0',
 	}
 	url = "http://bhasha.iiit.ac.in/ocr/infer"
 	response = requests.post(url, headers={
