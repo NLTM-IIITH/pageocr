@@ -5,6 +5,7 @@ IMAGE_FOLDER = '/home/krishna/pageocr/backend/images'
 # this is the table for conversion of verbose language to ocr language code
 LANGUAGES = {
 	'hindi': 'hi',
+	'english': 'en',
 	'marathi': 'mr',
 	'tamil': 'ta',
 	'telugu': 'te',

@@ -1,13 +1,15 @@
 import json
+import time
 import os
 from os.path import basename, join
 from typing import List
+from tqdm import tqdm
 
 import requests
 from flask import Flask, jsonify, render_template, request
 from PIL import Image
 
-from config import STATIC_IMAGE_FOLDER, STATIC_LAYOUT_FOLDER
+from config import STATIC_IMAGE_FOLDER, STATIC_LAYOUT_FOLDER, MT_ACCESS_TOKEN
 
 app = Flask(__name__)
 app.config.update(
@@ -63,6 +65,130 @@ def get_yojna_images() -> List:
 	return images
 
 
+@app.route(PREFIX + '/demo', methods=["GET", "POST"])
+def demo():
+	return render_template('demo.html')
+
+def get_access_token():
+	key = 'QUFkb0pmZEpONExLWWVkSlgySUs0YVJqcDU0YTp5Y3pEUmxoQ2twUER6SG1SdTBtQzNnVFJTVm9h'
+	url = 'https://sts.choreo.dev/oauth2/token'
+	headers = {
+		'Authorization': f'Basic {key}'
+	}
+	data = {
+		'grant_type': 'client_credentials'
+	}
+	r = requests.post(url, headers=headers, data=data, verify=False)
+	print(r.text)
+	return r.json()['access_token']
+
+def perform_mt(text, lang):
+	print(text)
+	text = text.strip().split('\n')
+	print(len(text))
+	token = get_access_token()
+	from_lang = lang
+	to_lang = 'eng' if lang == 'hin' else 'hin'
+	print(f'Performing MT from {from_lang} to {to_lang}')
+	url = "https://11fc0468-644c-4cc6-be7d-46b5bffcd914-prod.e1-us-east-azure.choreoapis.dev/aqqz/iiitilmt/1.0.0/onemt"
+	headers = {
+		'Authorization': f'Bearer {token}',
+		'Content-Type': 'application/json',
+	}
+	ret = []
+	for i in tqdm(text):
+		payload = json.dumps({
+			'text': i,
+			'source_language': from_lang,
+			'target_language': to_lang
+		})
+		try:
+			r = requests.post(url, headers=headers, data=payload)
+			ret.append(r.json()['data'])
+		except Exception as e:
+			print(e)
+			print(r.text)
+			pass
+	ret = [i.strip() for i in ret]
+	return '\n'.join(ret)
+
+
+@app.route(PREFIX + '/demo_page_mt', methods=['GET', 'POST'])
+def demo_page_mt():
+	image = request.args.get('image').strip()
+	language = request.args.get('language', 'hindi').strip()
+	json_path = join(STATIC_LAYOUT_FOLDER, 'demo', image.replace('jpg','json'))
+	ret = json.loads(open(json_path, 'r', encoding='utf-8').read())
+	text = ret['text']
+	text = perform_mt(text, 'eng' if language == 'english' else 'hin')
+	ret['text'] = text
+	with open(json_path, 'w', encoding='utf-8') as f:
+		f.write(json.dumps(ret, indent=4, ensure_ascii=False))
+	print(text)
+	return render_template(
+		'demo_page_mt.html',
+		image=image,
+		text=text,
+		language='hindi' if language == 'english' else 'english',
+	)
+
+
+@app.route(PREFIX + '/demo_page', methods=['GET', 'POST'])
+def demo_page():
+	print(request.form)
+	print(request.files)
+	image = request.files['image']
+	language = request.form.get('language', 'hindi')
+	print(image.filename)
+	image_folder = "/home/krishna/pageocr/frontend/static/images/demo"
+	image_path = join(image_folder, image.filename)
+	try:
+		os.system('rm {}'.format(image_path))
+	except:
+		pass
+	image.save(image_path)
+	image = image_path
+
+	r = requests.post(
+		'http://10.4.16.103:8881/pageocr/api',
+		headers={},
+		data={
+			'language': language,
+			'version': 'v2_robust' if language == 'hindi' else 'v3_robust'
+		},
+		files=[
+			(
+				'image',
+				(
+					basename(image),
+					open(image, 'rb'),
+					'image/jpeg',
+				)
+			)
+		]
+	)
+	print(r.status_code)
+	layout_location = join(
+		STATIC_LAYOUT_FOLDER,
+		f'demo/{basename(image).split(".")[0]}.json'
+	)
+	with open(layout_location, 'w+', encoding='utf-8') as f:
+		json.dump(
+			r.json(),
+			f,
+			ensure_ascii=False,
+			indent=4
+		)
+	text = r.json()['text']
+	print(text)
+	return render_template(
+		'demo_page.html',
+		image=basename(image),
+		text=text,
+		language=language,
+	)
+
+
 @app.route(PREFIX + '/', methods=["GET", "POST"])
 def index():
 	return render_template(
@@ -94,6 +220,28 @@ def images():
 			ravi_image_list=get_ravi_images(language),
 		)
 
+@app.route(PREFIX + '/words', methods=['GET'])
+def get_all_words():
+	image = request.args.get('image').strip()
+	language = request.args.get('language', 'hindi').strip()
+	image_location = join(STATIC_IMAGE_FOLDER, language, image)
+	img = Image.open(image_location)
+	width, height = img.width, img.height
+	wratio = 350 / width
+	hratio = 600 / height
+	json_location = join(STATIC_LAYOUT_FOLDER, language, image.replace('jpg','json'))
+	a = json.load(open(json_location, 'r'))
+	a = a['regions']
+	ret = []
+	for i in a:
+		ret.append({
+			'x': int(wratio * i['bounding_box']['x']),
+			'y': int(hratio * i['bounding_box']['y']),
+			'w': int(wratio * i['bounding_box']['w']),
+			'h': int(hratio * i['bounding_box']['h']),
+			'text': i['label'].strip(),
+		})
+	return jsonify(ret)
 
 def get_coordinates(text, start, end):
 	text = text.strip()
@@ -117,6 +265,7 @@ def combine_bbox(a):
 	ymin = min([i['y'] for i in a])
 	ymax = max([i['y']+i['h'] for i in a])
 	return (xmin, ymin, xmax-xmin, ymax-ymin)
+
 
 
 @app.route(PREFIX + '/position', methods=['GET'])
@@ -172,7 +321,7 @@ def page():
 	image = join(STATIC_IMAGE_FOLDER, language, image)
 	print(image)
 	r = requests.post(
-		'http://10.4.16.103:8881/pageocr',
+		'http://10.4.16.103:8881/pageocr/api',
 		headers={},
 		data={
 			'language': 'hindi' if language == 'yojna' else language

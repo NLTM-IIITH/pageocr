@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width" />
+  <title>DocumentOCR Demo</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+  <!-- Bootstrap CSS File -->
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <!-- Main Stylesheet File -->
+  <link href="/dococr/{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  <link href="/dococr/{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.loader-wrapper').click(function() {
+        $(this).addClass('loading');
+      })
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <center class="mt-4">
+      <span class="h1" style="color: #018db4">DocumentOCR Demo</span>
+    </center>
+    <br> <br>
+    <div class="container mt-4">
+      <form method="post" enctype="multipart/form-data" action="/dococr/demo_page">
+        <div class="form-row mt-5">
+          <div class="col"></div>
+          <div class="form-group">
+            <label for="image-file">Upload Image</label>
+            <input type="file" class="form-control-file" name="image" id="image-file">
+          </div>
+          <div class="form-group">
+            <label for="id_language">Select Language</label>
+            <select class="form-control form-control-lg" name="language" id="id_language">
+              <option value="hindi">Hindi</option>
+              <option value="english">English</option>
+            </select>
+          </div>
+
+          <div class="col"></div>
+
+        </div>
+        <div class="form-row mt-3">
+
+          <div class="col"></div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="col"></div>
+        </div>
+      </form>
+    </div>
+    <br>
+  </div>
+</body>
+
+</html>

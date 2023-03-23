@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width" />
+  <title>DocumentOCR Demo</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+  <!-- Bootstrap CSS File -->
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+  integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <!-- Main Stylesheet File -->
+  <link href="/dococr/{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  <link href="/dococr/{{ url_for('static', filename='css/page.css') }}" rel="stylesheet">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    window.onload = function() {
+      var c = document.getElementById('mycanvas');
+      var ctx = c.getContext('2d');
+      var img = document.getElementById('image');
+      ctx.drawImage(img, 0, 0, 350, 600);
+    }
+    $(document).ready(function() {
+      $(document).mouseup(function() {
+        console.log('mouse up detected');
+        if (window.getSelection) {
+          let a = window.getSelection()
+          if (a.isCollapsed) return;
+          console.log('selection detected')
+          let start = Math.min(a.anchorOffset, a.focusOffset);
+          let end = Math.max(a.anchorOffset, a.focusOffset);
+          console.log(start, end)
+          $.ajax({
+            url: '/dococr/position',
+            type: "get",
+            data: {
+              "image": "{{ image }}",
+              "language": "demo",
+              "start": start,
+              "end": end
+            },
+            success: function(result) {
+              console.log(result);
+              var c = document.getElementById('mycanvas');
+              var ctx = c.getContext('2d');
+              var img = document.getElementById('image');
+              ctx.clearRect(0,0, c.width, c.height);
+              ctx.drawImage(img, 0, 0, 350, 600);
+              ctx.beginPath();
+              ctx.fillStyle = 'rgba(49,102,235,0.3)'
+              // ctx.rect(result.x, result.y, result.w, result.h);
+              ctx.fillRect(result.x, result.y, result.w, result.h);
+              ctx.stroke();
+            }
+          })
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <center class="mt-4">
+      <span class="h1" style="color: #018db4">DocumentOCR Demo</span>
+    </center>
+    <br><br>
+    <div class="row">
+      <div class="col" style="display: flex; align-items: center;">
+        <a href="{{ url_for('demo') }}" class="btn btn-primary mr-3">Back</a>
+        <a href="{{ url_for('demo_page_mt') }}?language={{ language }}&image={{ image }}" class="btn btn-info">
+          Run MT (to {% if language == 'hindi' %}English{% else %}Hindi{% endif %})
+        </a>
+      </div>
+      <div class="col">
+        <center class="h3">Printed - {{ language|title }}</center>
+      </div>
+      <div class="col"></div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-6">
+        <center>
+          <img class="img-responsive d-none" id="image" src="/dococr/{{ url_for('static', filename='images/demo/'+'/'+image) }}" alt="" width="350">
+          <canvas id="mycanvas" width="350" height="600" style="border: 1px solid black;"></canvas>
+        </center>
+      </div>
+      <div class="col-6">
+        <center>
+          <pre id="text" style="font-size: larger;">{{ text }}</pre>
+        </center>
+      </div>
+    </div>
+    <br>
+    <footer class="footer">
+      <p>Copyright &copy 2022 International Institute of Information Technology,Hyderabad.All rights reserved</p>
+    <footer>
+  </div>
+</body>
+
+</html>

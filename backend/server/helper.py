@@ -14,13 +14,13 @@ from .config import IMAGE_FOLDER, LANGUAGES
 from .models import PageOCRResponse, Region
 
 
-def call_layout_parser(image_path: str) -> List[Dict[str, int]]:
+def call_layout_parser(image_path: str, model: str = 'v2_doctr') -> List[Dict[str, int]]:
 	"""
 	function to the call the layout parser API
 
 	@returns the list of the regions of the word level parser
 	"""
-	url = "http://10.4.16.103:8888/layout"
+	url = "https://ilocr.iiit.ac.in/layout/"
 	files=[
 		(
 			'images',
@@ -34,7 +34,9 @@ def call_layout_parser(image_path: str) -> List[Dict[str, int]]:
 	response = requests.post(
 		url,
 		headers={},
-		data={},
+		data={
+			'model': model
+		},
 		files=files
 	)
 	return response.json()[0]['regions']
@@ -71,7 +73,7 @@ def load_model(language: str):
 	return response.ok
 
 
-def perform_ocr(path: str, language: str) -> List[str]:
+def perform_ocr(path: str, language: str, version: str, modality: str = 'printed') -> List[str]:
 	"""
 	call the ocr API on all the images inside the path folder
 
@@ -86,11 +88,11 @@ def perform_ocr(path: str, language: str) -> List[str]:
 	print(list(map(len, a)))
 	ocr_request = {
 		'imageContent': a,
-		'modality': 'printed',
+		'modality': modality,
 		'language': LANGUAGES[language],
-		'version': 'v0',
+		'version': version,
 	}
-	url = "http://bhasha.iiit.ac.in/ocr/infer"
+	url = "https://ilocr.iiit.ac.in/ocr/infer"
 	response = requests.post(url, headers={
 		'Content-Type': 'application/json'
 	}, data=json.dumps(ocr_request))
