@@ -1,24 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<<<<<<< Updated upstream
-{% include "load_languages.html" %}
-=======
 
-  <div class="container">
-    <h4 class="text-center">Select a language/project to continue</h4>
-    <div class="language">
-      {% for language in language_list %}
-      <div class="card h-100 m-3">
-        <a href="{{ url_for('images') }}?language={{ language }}">
-          <div class="card-body">
-            <center class="card-title h3">{{ language|title }}</center>
-          </div>
-        </a>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
+  {% include load_languages.html %}
   
->>>>>>> Stashed changes
 {% endblock %}
