@@ -18,15 +18,22 @@
       {% if loop.index % 2==0 %}
       
       <div class="card h-100 m-3 languageOrange">
-        {% else %}
-        <div class="card h-100 m-3 languageBlue">
-          {% endif %}
         <a href="{{ url_for('images') }}?language={{ language }}">
-          <div class="card-body">
+          <div class="card-body languageOrange">
             <center class="card-title h3">{{ language|title }}</center>
           </div>
         </a>
       </div>
+        {% else %}
+        <div class="card h-100 m-3 languageBlue">
+          <a href="{{ url_for('images') }}?language={{ language }}">
+            <div class="card-body languageBlue">
+              <center class="card-title h3">{{ language|title }}</center>
+            </div>
+          </a>
+        </div>
+          {% endif %}
+       
       {% endfor %}
     </div>
     </div>
