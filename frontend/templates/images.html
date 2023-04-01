@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<<<<<<< Updated upstream
 {% include "load_languages.html" %}
 <script>
     document.getElementById("language").classList.replace("show","hide");
@@ -18,3 +19,24 @@
 {% include "load_images.html" %}
 
 {% endblock %}
+=======
+{% for image in image_list %}
+<div class="inner m-2">
+  <div class="loader-wrapper">
+    <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}">
+      <!--Commented below By Vineet-->
+      <!--img class="img-responsive border border-info rounded lazyload" data-src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250"-->
+    <!--added below By Vineet-->
+      <img class="img-responsive border border-info rounded lazyload" src="../{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
+      <!--img class="img-responsive border border-info rounded lazyload" data-src="../static/images/assamese/0.jpg" alt="" width="250"-->
+    </a>
+    <div class="loader">
+      <span></span>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% include 'load_images.html' %}
+  
+{% endblock %}
+>>>>>>> Stashed changes

@@ -25,7 +25,8 @@ def get_image_list(language: str) -> List:
 	path = join(STATIC_IMAGE_FOLDER, language)
 	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
-	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
+	#commented by vineet for testing
+	#images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
 	images = [i for i in images if int(i.strip().split('.')[0])<1000]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
@@ -37,6 +38,7 @@ def get_ravi_images(language: str) -> List:
 	path = join(STATIC_IMAGE_FOLDER, language)
 	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
+	
 	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
 	images = [i for i in images if int(i.strip().split('.')[0])>1000]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
@@ -140,7 +142,10 @@ def demo_page():
 	image = request.files['image']
 	language = request.form.get('language', 'hindi')
 	print(image.filename)
-	image_folder = "/home/krishna/pageocr/frontend/static/images/demo"
+	#commented below line by Vineet
+	#image_folder = "/home/krishna/pageocr/frontend/static/images/demo"
+	#added below line by Vineet
+	image_folder = "/static/images/demo"
 	image_path = join(image_folder, image.filename)
 	try:
 		os.system('rm {}'.format(image_path))

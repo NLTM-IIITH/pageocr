@@ -1,7 +1,16 @@
 <div class="inner m-2">
     <div class="loader-wrapper">
+<<<<<<< Updated upstream
       <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}&type={{type}}">
         <img class="img-responsive border border-info rounded lazyload" data-src="../{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
+=======
+      <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}">
+        <!--Commented below By Vineet-->
+        <img class="img-responsive border border-info rounded lazyload" data-src="../../dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
+      <!--added below By Vineet-->
+        <!--img class="img-responsive border border-info rounded lazyload" data-src="../{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250"-->
+        <!--img class="img-responsive border border-info rounded lazyload" data-src="../static/images/assamese/0.jpg" alt="" width="250"-->
+>>>>>>> Stashed changes
       </a>
       <div class="loader">
         <span></span>
