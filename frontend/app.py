@@ -363,6 +363,7 @@ def page():
 		image=basename(image),
 		text=text,
 		language=language,
+		type=type,
 	)
 
 
