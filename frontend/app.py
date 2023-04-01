@@ -3,7 +3,7 @@ import time
 import os
 from os.path import basename, join
 from typing import List
-#from tqdm import tqdm
+from tqdm import tqdm
 
 import requests
 from flask import Flask, jsonify, render_template, request
