@@ -25,8 +25,7 @@ def get_image_list(language: str) -> List:
 	path = join(STATIC_IMAGE_FOLDER, language)
 	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
-	#commented by vineet for testing
-	#images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
+	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
 	images = [i for i in images if int(i.strip().split('.')[0])<1000]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
@@ -38,7 +37,6 @@ def get_ravi_images(language: str) -> List:
 	path = join(STATIC_IMAGE_FOLDER, language)
 	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
-	
 	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
 	images = [i for i in images if int(i.strip().split('.')[0])>1000]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
