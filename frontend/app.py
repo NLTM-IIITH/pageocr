@@ -3,7 +3,7 @@ import time
 import os
 from os.path import basename, join
 from typing import List
-from tqdm import tqdm
+#from tqdm import tqdm
 
 import requests
 from flask import Flask, jsonify, render_template, request
@@ -218,6 +218,7 @@ def images():
 			language=language,
 			image_list=get_image_list(language),
 			ravi_image_list=get_ravi_images(language),
+			language_list=os.listdir(STATIC_IMAGE_FOLDER),
 		)
 
 @app.route(PREFIX + '/words', methods=['GET'])
@@ -307,6 +308,8 @@ def get_word_position():
 def page():
 	image = request.args.get('image').strip()
 	language = request.args.get('language', 'hindi').strip()
+	type=request.args.get('type', 'Printed').strip()
+
 	if int(image.strip().split('.')[0]) > 1000 or language == 'dipti':
 		# either the images are in curated category or language belongs to dipti
 		print('hello')
@@ -336,7 +339,7 @@ def page():
 				)
 			)
 		]
-	)
+	) 
 	print(r.status_code)
 	layout_location = join(
 		STATIC_LAYOUT_FOLDER,

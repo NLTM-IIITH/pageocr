@@ -13,3 +13,47 @@
   transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
+
+.bodyBackground{
+  background-image:url("../UI_images/alphaFaded.png");
+}
+.languageBlue
+{
+
+background: -webkit-linear-gradient(#d0e3fb, #4271b4);
+border-radius:25px!important;
+vertical-align:middle;
+color: black!important;
+}
+
+
+.languageOrange
+{
+
+background: -webkit-linear-gradient(#e69d30, #d0e3fb)!important;
+border-radius:25px!important;
+vertical-align:middle;
+color: black!important;
+}
+.languageWhite
+{
+
+background: -webkit-linear-gradient(#ffffff, #d0e3fb)!important;
+border-radius:25px!important;
+vertical-align:middle;
+color: black!important;
+}
+.languageGreen
+{
+
+background: -webkit-linear-gradient(#d0e3fb,#309d30)!important;
+border-radius:25px!important;
+vertical-align:middle;
+color: black!important;
+}
+.tricolor{
+  background-image:url("../UI_images/tricolor.png")!important;
+  background-size: cover;
+  border-radius:25px!important;
+  
+}

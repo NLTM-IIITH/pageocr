@@ -1,96 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width" />
-  <title>DocumentOCR Demo</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-  <!-- Bootstrap CSS File -->
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+{% block content %}
+{% include "load_languages.html" %}
+<script>
+    document.getElementById("language").classList.replace("show","hide");
+</script>
+{% set temp_imageList=image_list %}
+ {%  set type="Printed" %}
+ {% set show="show" %}
+ {% set class="languageWhite" %}
+{% include "load_images.html" %}
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-  <!-- Main Stylesheet File -->
-  <link href="/dococr/{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-  <link href="/dococr/{{ url_for('static', filename='css/images.css') }}" rel="stylesheet">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
-  <script>
-    $(document).ready(function() {
-      lazyload();
-      $('.loader-wrapper').click(function() {
-        $(this).addClass('loading');
-      })
-    });
-  </script>
-</head>
+{% set temp_imageList=ravi_image_list %}
+ {%  set type="Curated" %}
+ {% set show="" %}
+ {% set class="languageGreen" %}
+{% include "load_images.html" %}
 
-<body>
-  <div class="container">
-    <center class="mt-4">
-      <a href="{{ url_for('index') }}">
-        <span class="h1" style="color: #018db4">DocumentOCR Demo</span>
-      </a>
-    </center>
-    <br> <br>
-    <div class="row">
-      <div class="col" style="display: flex; align-items: center;">
-        <a href="{{ url_for('index') }}" class="btn btn-primary">Back</a>
-      </div>
-      <div class="col">
-        <center class="h3">Printed - {{ language|title }}</center>
-      </div>
-      <div class="col"></div>
-    </div>
-    <hr>
-    <div class="container">
-      <div class="outer">
-        {% for image in image_list %}
-        <div class="inner m-2">
-          <div class="loader-wrapper">
-            <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}">
-              <img class="img-responsive border border-info rounded lazyload" data-src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
-            </a>
-            <div class="loader">
-              <span></span>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="container">
-      <hr>
-      <hr>
-      <center>
-        <h3 title="Images that are carefully selected to minimize the layout segmentation errors to highlight the OCR performance">Curated Images</h3>
-      </center>
-      <hr><hr>
-      <div class="outer">
-        {% for image in ravi_image_list %}
-        <div class="inner m-2">
-          <div class="loader-wrapper">
-            <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}">
-              <img class="img-responsive border border-info rounded lazyload" data-src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
-            </a>
-            <div class="loader">
-              <span></span>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <br>
-    <footer class="footer">
-      <p>Copyright &copy 2022 International Institute of Information Technology,Hyderabad.All rights reserved</p>
-    <footer>
-  </div>
-</body>
-
-</html>
+{% endblock %}
