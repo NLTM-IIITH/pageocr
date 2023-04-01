@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
     integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-<<<<<<< Updated upstream
   <!-- Main Stylesheet File -->
   <link href="../{{ url_for('static',filename='css/index.css')}}" rel="stylesheet">
   <link href="../{{ url_for('static',filename='css/page.css')}}" rel="stylesheet">
@@ -28,22 +27,6 @@
   <script>
     $(document).ready(function() {
       lazyload();
-=======
-  
-   <!-- Main Stylesheet File -->
-  <!--commented below 2 line by Vineet-->
-  <!--link href="/dococr/{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"-->
-  <!--link href="/dococr/{{ url_for('static', filename='css/index.css') }}" rel="stylesheet"-->
-
-  <!--added below 2 line by Vineet-->
-  <link href="../static/css/style.css" rel="stylesheet">
-  <link href="../static/css/index.css" rel="stylesheet">
-
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-  <script>
-    $(document).ready(function() {
->>>>>>> Stashed changes
       $('.loader-wrapper').click(function() {
         $(this).addClass('loading');
       })
@@ -51,7 +34,6 @@
   </script>
 </head>
 
-<<<<<<< Updated upstream
 <body class="bodyBackground">
   
 
@@ -66,23 +48,10 @@
         <span class="h1" style="color: #018db4" >DocumentOCR Demo</span>
       </a>
     </center>
-=======
-<body>
-<div class="table" >
-<div class="row" >
-<div class="col">
-    <img src="../static/UI_images/iiit-new.png" height="100" width="160"></img>
-</div>
-<div class="col">
-    <center class="mt-4">
-        <span class="h1" style="color: #018db4">Document OCR Demo</span>
-      </center>
->>>>>>> Stashed changes
 </div>
 <div class="col">
 </div>
 </div>
-<<<<<<< Updated upstream
 </div>   
     <div class="container">
 	 {% block content %} {% endblock %}
@@ -96,12 +65,3 @@
 </body>
 
 </html>
-=======
-</div>
-{% block content %}{% endblock %}
- <footer class="footer">
-      <p>Copyright &copy 2022 International Institute of Information Technology,Hyderabad.All rights reserved</p>
- <footer>
- </body>
- </html>
->>>>>>> Stashed changes
