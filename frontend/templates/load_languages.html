@@ -1,0 +1,41 @@
+
+
+<div class="container ">
+    <button type="button"
+    class="btn btn-primary  w-100 languageOrange"
+    data-toggle="collapse"
+    data-target="#language"
+    aria-expanded="true"
+    >
+    <h4 class="text-center">Select a language/project to continue</h4>
+    </button>
+    
+    <div class="collapse show" id="language">
+        <div class="language">
+          {% set counter=0 %}
+      {% for language in language_list %}
+     
+      {% if loop.index % 2==0 %}
+      
+      <div class="card h-100 m-3 languageOrange">
+        <a href="{{ url_for('images') }}?language={{ language }}">
+          <div class="card-body languageOrange">
+            <center class="card-title h3">{{ language|title }}</center>
+          </div>
+        </a>
+      </div>
+        {% else %}
+        <div class="card h-100 m-3 languageBlue">
+          <a href="{{ url_for('images') }}?language={{ language }}">
+            <div class="card-body languageBlue">
+              <center class="card-title h3">{{ language|title }}</center>
+            </div>
+          </a>
+        </div>
+          {% endif %}
+       
+      {% endfor %}
+    </div>
+    </div>
+</div>
+  

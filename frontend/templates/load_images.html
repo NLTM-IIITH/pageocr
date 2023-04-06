@@ -1,0 +1,19 @@
+
+<div class="container">
+<button type="button"
+class="btn btn-primary  w-100 {{class}}"
+data-toggle="collapse"
+data-target="#{{type}}"
+aria-expanded="true"
+>
+
+<h4 class="text-center">Select {{type}} image</h4>
+</button>
+<div id="{{type}}" class="collapse {{show}}" >
+  <div class=" card-body">
+    {% for image in temp_imageList %}
+    {% include "image_block.html" %}
+    {% endfor %}
+  </div>
+  </div>
+  </div>

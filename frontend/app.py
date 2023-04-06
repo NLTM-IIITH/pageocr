@@ -140,7 +140,10 @@ def demo_page():
 	image = request.files['image']
 	language = request.form.get('language', 'hindi')
 	print(image.filename)
-	image_folder = "/home/krishna/pageocr/frontend/static/images/demo"
+	#commented below line by Vineet
+	#image_folder = "/home/krishna/pageocr/frontend/static/images/demo"
+	#added below line by Vineet
+	image_folder = "/static/images/demo"
 	image_path = join(image_folder, image.filename)
 	try:
 		os.system('rm {}'.format(image_path))
@@ -218,6 +221,7 @@ def images():
 			language=language,
 			image_list=get_image_list(language),
 			ravi_image_list=get_ravi_images(language),
+			language_list=os.listdir(STATIC_IMAGE_FOLDER),
 		)
 
 @app.route(PREFIX + '/words', methods=['GET'])
@@ -307,6 +311,8 @@ def get_word_position():
 def page():
 	image = request.args.get('image').strip()
 	language = request.args.get('language', 'hindi').strip()
+	type=request.args.get('type', 'Printed').strip()
+
 	if int(image.strip().split('.')[0]) > 1000 or language == 'dipti':
 		# either the images are in curated category or language belongs to dipti
 		print('hello')
@@ -336,7 +342,7 @@ def page():
 				)
 			)
 		]
-	)
+	) 
 	print(r.status_code)
 	layout_location = join(
 		STATIC_LAYOUT_FOLDER,
@@ -357,6 +363,7 @@ def page():
 		image=basename(image),
 		text=text,
 		language=language,
+		type=type,
 	)
 
 

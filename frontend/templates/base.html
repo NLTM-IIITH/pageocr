@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width" />
+  <title>DocumentOCR Demo</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+  <!-- Bootstrap CSS File -->
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <!-- Main Stylesheet File -->
+  <link href="../{{ url_for('static',filename='css/index.css')}}" rel="stylesheet">
+  <link href="../{{ url_for('static',filename='css/page.css')}}" rel="stylesheet">
+  <link href="../{{ url_for('static',filename='css/style.css')}}" rel="stylesheet">
+  <link href="../{{ url_for('static',filename='css/images.css')}}" rel="stylesheet">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      lazyload();
+      $('.loader-wrapper').click(function() {
+        $(this).addClass('loading');
+      })
+    });
+  </script>
+</head>
+
+<body class="bodyBackground">
+  
+
+ <div class="table" >
+<div class="row" >
+<div class="col">
+<img src="../static/UI_images/iiit-new.png" height="100" width="160"></img>
+</div>
+<div class="col ">
+<center class="mt-4 tricolor">
+      <a href="{{ url_for('index') }}">
+        <span class="h1" style="color: #018db4" >DocumentOCR Demo</span>
+      </a>
+    </center>
+</div>
+<div class="col">
+</div>
+</div>
+</div>   
+    <div class="container">
+	 {% block content %} {% endblock %}
+	</div>
+    
+    <br>
+    <footer class="footer">
+      <p>Copyright &copy 2022 International Institute of Information Technology,Hyderabad.All rights reserved</p>
+    <footer>
+  
+</body>
+
+</html>
