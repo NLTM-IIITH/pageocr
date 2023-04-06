@@ -15,7 +15,7 @@
 }
 
 .bodyBackground{
-  background-image:url("../UI_images/alphaFaded.png");
+  background-image:url("/dococr/static/UI_images/alphaFaded.png");
 }
 .languageBlue
 {
@@ -52,7 +52,7 @@ vertical-align:middle;
 color: black!important;
 }
 .tricolor{
-  background-image:url("../UI_images/tricolor.png")!important;
+  background-image:url("/dococr/static/UI_images/tricolor.png")!important;
   background-size: cover;
   border-radius:25px!important;
   
