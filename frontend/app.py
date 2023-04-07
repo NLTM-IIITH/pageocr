@@ -19,6 +19,7 @@ app.config.update(
 
 PREFIX = '/dococr'
 PRINTEDIMAGECOUNT=1000
+textList=["অসমিয়া","বঙালী","ગુજરાતી","हिंदी","ಕೆನಡಾ","മലയാളം","Manipuri","मराठी","(ଓଡ଼ିଆ","ਪੰਜਾਬੀ","தமிழ்","తెలుగు","اردو"]
 def get_NumberOfImages(language: str,imageType: str) -> int:
 	print(f'getting all the images for language: {language}')
 	path = join(STATIC_IMAGE_FOLDER, language)
@@ -203,9 +204,10 @@ def demo_page():
 
 @app.route(PREFIX + '/', methods=["GET", "POST"])
 def index():
+	
 	return render_template(
 		'index.html',
-		language_list=os.listdir(STATIC_IMAGE_FOLDER)
+		language_list=zip(os.listdir(STATIC_IMAGE_FOLDER),textList),
 	)
 
 
@@ -230,7 +232,7 @@ def images():
 			language=language,
 			image_list=get_image_list(language),
 			ravi_image_list=get_ravi_images(language),
-			language_list=os.listdir(STATIC_IMAGE_FOLDER),
+			language_list=zip(os.listdir(STATIC_IMAGE_FOLDER),textList),
 		)
 
 @app.route(PREFIX + '/words', methods=['GET'])

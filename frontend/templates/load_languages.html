@@ -7,20 +7,21 @@
     data-target="#language"
     aria-expanded="true"
     >
-    <h4 class="text-center">Select a language/project to continue</h4>
+    <h3 class="text-center">Select a language/project to continue</h3>
     </button>
     
     <div class="collapse show" id="language">
         <div class="language">
-          {% set counter=0 %}
-      {% for language in language_list %}
+          
+          
+      {% for language,languageText in language_list %}
      
       {% if loop.index % 2==0 %}
       
       <div class="card h-100 m-3 languageOrange languageBar">
         <a href="{{ url_for('images') }}?language={{ language }}">
           <div class="card-body languageOrange languageBar">
-            <center class="card-title h3">{{ language|title }}</center>
+            <center class="card-title h4">{{ language|title }}&nbsp;/&nbsp;{{languageText}}</center>
           </div>
         </a>
       </div>
@@ -28,7 +29,7 @@
         <div class="card h-100 m-3 languageBlue languageBar">
           <a href="{{ url_for('images') }}?language={{ language }}">
             <div class="card-body languageBlue languageBar">
-              <center class="card-title h3">{{ language|title }}</center>
+              <center class="card-title h4">{{ language|title }}&nbsp;/&nbsp;{{languageText}}</center>
             </div>
           </a>
         </div>

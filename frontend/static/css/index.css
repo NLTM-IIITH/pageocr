@@ -21,6 +21,7 @@
   border-radius:25px!important;
   vertical-align:middle;
   color: black!important;
+  font-size:x-large!important;
 }
 .languageBlue{
 background: -webkit-linear-gradient(#d0e3fb, #4271b4);
@@ -43,7 +44,7 @@ background: -webkit-linear-gradient(#d0e3fb,#309d30)!important;
 .content{
   position: relative;
 }
-.content .contentBackground{
+.contentBackground{
   background-image:url("../UI_images/alphaFaded.png");
   position: absolute;
   top: 0;
@@ -53,7 +54,7 @@ background: -webkit-linear-gradient(#d0e3fb,#309d30)!important;
   opacity: 0.5;
   background-size:auto;
 }
-.content .contentBody{
+ .contentBody{
   position: relative;
     z-index: 1;
   
