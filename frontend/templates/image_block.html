@@ -1,6 +1,6 @@
 <div class="inner m-2">
     <div class="loader-wrapper">
-      <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}&type={{type}}">
+      <a href="{{ url_for('page') }}?image={{ image }}&language={{ language }}&imageType={{imageType}}">
         <img class="img-responsive border border-info rounded lazyload" data-src="../{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="250">
       </a>
       <div class="loader">

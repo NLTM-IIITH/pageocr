@@ -6,13 +6,13 @@
     document.getElementById("language").classList.replace("show","hide");
 </script>
 {% set temp_imageList=image_list %}
- {%  set type="Printed" %}
+ {%  set imageType="Printed" %}
  {% set show="show" %}
  {% set class="languageWhite" %}
 {% include "load_images.html" %}
 
 {% set temp_imageList=ravi_image_list %}
- {%  set type="Curated" %}
+ {%  set imageType="Curated" %}
  {% set show="" %}
  {% set class="languageGreen" %}
 {% include "load_images.html" %}

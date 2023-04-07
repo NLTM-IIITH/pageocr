@@ -34,13 +34,15 @@
   </script>
 </head>
 
-<body class="bodyBackground">
-  
+<body >
+  <div class="content">
+  <div class="contentBackground"></div>
+  <div class="contentBody">
 
  <div class="table" >
 <div class="row" >
 <div class="col">
-<img src="../static/UI_images/iiit-new.png" height="100" width="160"></img>
+<img src="../{{ url_for('static',filename='UI_images/iiit-new.png')}}" height="100" width="160"></img>
 </div>
 <div class="col ">
 <center class="mt-4 tricolor">
@@ -52,16 +54,23 @@
 <div class="col">
 </div>
 </div>
-</div>   
-    <div class="container">
+  
+<div class="row" >
+    <div class="col container">
 	 {% block content %} {% endblock %}
 	</div>
-    
+</div>
+<div class="row" >
+  <div class="col">
     <br>
     <footer class="footer">
       <p>Copyright &copy 2022 International Institute of Information Technology,Hyderabad.All rights reserved</p>
     <footer>
-  
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
 </body>
 
 </html>
