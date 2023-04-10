@@ -332,15 +332,15 @@ def page():
 		prevImage=imageNumber-1
 	if imageNumber<max:
 		nextImage=imageNumber+1
-	return render_template(
-			'page.html',
-			image=image,
-			text="text",
-			language=language,
-			imageType=imageType,
-			prevImage=prevImage,
-			nextImage=nextImage,
-		)
+	# return render_template(
+	# 		'page.html',
+	# 		image=image,
+	# 		text="text",
+	# 		language=language,
+	# 		imageType=imageType,
+	# 		prevImage=prevImage,
+	# 		nextImage=nextImage,
+	# 	)
 	if int(imageNumber> 1000) or language == 'dipti':
 		# either the images are in curated category or language belongs to dipti
 		print('hello')

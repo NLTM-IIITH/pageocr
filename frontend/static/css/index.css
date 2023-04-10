@@ -15,7 +15,7 @@
 }
 
 .bodyBackground{
-  background-image:url("../UI_images/alphaFaded.png");
+  background-image:url("/dococr/static/UI_images/alphaFaded.png");
 }
 .languageBar{
   border-radius:25px!important;
@@ -36,7 +36,7 @@ background: -webkit-linear-gradient(#ffffff, #d0e3fb)!important;
 background: -webkit-linear-gradient(#d0e3fb,#309d30)!important;
 }
 .tricolor{
-  background-image:url("../UI_images/tricolor.png")!important;
+  background-image:url("/dococr/static/UI_images/tricolor.png")!important;
   background-size: cover;
   border-radius:25px!important;
 }
@@ -45,7 +45,7 @@ background: -webkit-linear-gradient(#d0e3fb,#309d30)!important;
   position: relative;
 }
 .contentBackground{
-  background-image:url("../UI_images/alphaFaded.png");
+  background-image:url("/dococr/static/UI_images/alphaFaded.png");
   position: absolute;
   top: 0;
   right: 0;

@@ -40,7 +40,7 @@
         <center>
           <!--img class="img-responsive d-none" id="image" src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="50%"-->
           <canvas id="mycanvas" height="600" width="350" style="width:100%; border: 1px solid black;margin:0px!important;padding: 0px!important;"> 
-            <img class="img-responsive d-none" id="image" src="../{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="">
+            <img class="img-responsive d-none" id="image" src="./{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="">
           </canvas>
         </center>
       </div>
