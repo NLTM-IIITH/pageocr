@@ -322,6 +322,7 @@ def page():
 			'page.html',
 			image=image,
 			text=text,
+			type=type,
 			language=language,
 		)
 	image = join(STATIC_IMAGE_FOLDER, language, image)
