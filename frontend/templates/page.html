@@ -1,78 +1,103 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <script>
-    
-    window.onload = function() {
-      var c = document.getElementById('mycanvas');
-      var ctx = c.getContext('2d');
-      var img = document.getElementById('image');
-      ctx.drawImage(img, 0, 0, 350, 600);
-    }
-    $(document).ready(function() {
-      $(document).mouseup(function() {
-        console.log('mouse up detected');
-        if (window.getSelection) {
-          let a = window.getSelection()
-          if (a.isCollapsed) return;
-          console.log('selection detected')
-          let start = Math.min(a.anchorOffset, a.focusOffset);
-          let end = Math.max(a.anchorOffset, a.focusOffset);
-          console.log(start, end)
-          $.ajax({
-            url: '/dococr/position',
-            type: "get",
-            data: {
-              "image": "{{ image }}",
-              "language": "{{ language }}",
-              "start": start,
-              "end": end
-            },
-            success: function(result) {
-              console.log(result);
-              var c = document.getElementById('mycanvas');
-              var ctx = c.getContext('2d');
-              var img = document.getElementById('image');
-              ctx.clearRect(0,0, c.width, c.height);
-              ctx.drawImage(img, 0, 0, 350, 600);
-              ctx.beginPath();
-              ctx.fillStyle = 'rgba(49,102,235,0.3)'
-              // ctx.rect(result.x, result.y, result.w, result.h);
-              ctx.fillRect(result.x, result.y, result.w, result.h);
-              ctx.stroke();
-            }
-          })
-        }
-      });
-    });
-    
-  </script>
-
-
-
-
+  
+<div class="table" >
     <div class="row">
       <div class="col" style="display: flex; align-items: center;">
         <a href="{{ url_for('images') }}?language={{ language }}" class="btn btn-primary">Back</a>
       </div>
       <div class="col">
-        <center class="h3">{{type}} - {{ language|title }}</center>
+        <center class="h3">{{imageType}} - {{ language|title }}</center>
       </div>
-      <div class="col"></div>
-    </div>
-    <hr>
-    <div class="row">
-      <div class="col-6">
-        <center>
-          <img class="img-responsive d-none" id="image" src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="350">
-          <canvas id="mycanvas" width="350" height="600" style="border: 1px solid black;"></canvas>
-        </center>
-      </div>
-      <div class="col-6">
-        <center>
-          <pre id="text" style="font-size: larger;">{{ text }}</pre>
-        </center>
+      <div class="col" style="text-align: right;">
+        {%
+          if prevImage>0:
+        %}
+        <a href="{{ url_for('page') }}?image={{ prevImage }}.jpg&language={{ language }}&imageType={{imageType}}">Previous</a>
+        {% endif%}
+        {%
+          if nextImage>0:
+        %}
+        <a href="{{ url_for('page') }}?image={{ nextImage }}.jpg&language={{ language }}&imageType={{imageType}}">Next</a>
+        {% endif%}
+      
       </div>
     </div>
-    <br>
+    
+    
+      <div class="row">
+        <div class="col">
+          <center><h3>Image</h3></center>
+          </div>
+          <div class="col">
+            <center><h3>OCR Text</h3></center>
+            </div>
+			</div>
+          <div class="row">
+      
+      <div class="col" >
+        <center>
+          <!--img class="img-responsive d-none" id="image" src="/dococr/{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="" width="50%"-->
+          <canvas id="mycanvas" height="600" width="350" style="width:100%; border: 1px solid black;margin:0px!important;padding: 0px!important;"> 
+            <img class="img-responsive d-none" id="image" src="../{{ url_for('static', filename='images/'+language+'/'+image) }}" alt="">
+          </canvas>
+        </center>
+      </div>
+      <div class="col" >
+          <pre id="text" style="font-size: larger;" height="600px!important;"><center>{{ text }}</center></pre>
+      </div>
+    </div>
+</div>
+<script>
+  var c = document.getElementById('mycanvas');
+  var canvasWidth=c.width;
+  var canvasHeight=c.height;
+  //alert(canvasHeight +" " +canvasWidth)
+  window.onload = function() {
+    var ctx = c.getContext('2d');
+    var img = document.getElementById('image');
+    ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+  }
+  $(document).ready(function() {
+    $(document).mouseup(function() {
+      console.log('mouse up detected');
+      if (window.getSelection) {
+        let a = window.getSelection()
+        if (a.isCollapsed) return;
+        console.log('selection detected')
+        let start = Math.min(a.anchorOffset, a.focusOffset);
+        let end = Math.max(a.anchorOffset, a.focusOffset);
+        console.log(start, end)
+        $.ajax({
+          url: '/dococr/position',
+          type: "get",
+          data: {
+            "image": "{{ image }}",
+            "language": "{{ language }}",
+            "start": start,
+            "end": end
+          },
+          success: function(result) {
+            console.log(result);
+            //var c = document.getElementById('mycanvas');
+            var ctx = c.getContext('2d');
+            var img = document.getElementById('image');
+            ctx.clearRect(0,0, c.width, c.height);
+            ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(49,102,235,0.3)'
+            // ctx.rect(result.x, result.y, result.w, result.h);
+            ctx.fillRect(result.x, result.y, result.w, result.h);
+            ctx.stroke();
+          }
+        })
+      }
+    });
+  });
+  
+</script>
+
+
+
     {% endblock %}
