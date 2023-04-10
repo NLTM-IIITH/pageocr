@@ -18,7 +18,17 @@ app.config.update(
 )
 
 PREFIX = '/dococr'
-
+PRINTEDIMAGECOUNT=1000
+textList=["অসমিয়া","বঙালী","ગુજરાતી","हिंदी","ಕೆನಡಾ","മലയാളം","Manipuri","मराठी","(ଓଡ଼ିଆ","ਪੰਜਾਬੀ","தமிழ்","తెలుగు","اردو"]
+def get_NumberOfImages(language: str,imageType: str) -> int:
+	print(f'getting all the images for language: {language}')
+	path = join(STATIC_IMAGE_FOLDER, language)
+	imagesCount = os.listdir(path).__len__()
+	imagesCount=imagesCount-1
+	if imageType=="Printed":
+		return min(imagesCount,PRINTEDIMAGECOUNT)
+	else :
+		return imagesCount
 
 def get_image_list(language: str) -> List:
 	print(f'getting all the images for language: {language}')
@@ -26,7 +36,7 @@ def get_image_list(language: str) -> List:
 	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
 	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
-	images = [i for i in images if int(i.strip().split('.')[0])<1000]
+	images = [i for i in images if int(i.strip().split('.')[0])<=PRINTEDIMAGECOUNT]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
 	return images
@@ -38,7 +48,7 @@ def get_ravi_images(language: str) -> List:
 	images = os.listdir(path)
 	# removing the 0.jpg from the list as it is only there for git reference
 	images = [i for i in images if i.endswith('jpg') and not i.startswith('0')]
-	images = [i for i in images if int(i.strip().split('.')[0])>1000]
+	images = [i for i in images if int(i.strip().split('.')[0])>PRINTEDIMAGECOUNT]
 	images = sorted(images, key=lambda x:int(x.strip().split('.')[0]))
 	print(images)
 	return images
@@ -194,9 +204,10 @@ def demo_page():
 
 @app.route(PREFIX + '/', methods=["GET", "POST"])
 def index():
+	
 	return render_template(
 		'index.html',
-		language_list=os.listdir(STATIC_IMAGE_FOLDER)
+		language_list=zip(os.listdir(STATIC_IMAGE_FOLDER),textList),
 	)
 
 
@@ -221,7 +232,7 @@ def images():
 			language=language,
 			image_list=get_image_list(language),
 			ravi_image_list=get_ravi_images(language),
-			language_list=os.listdir(STATIC_IMAGE_FOLDER),
+			language_list=zip(os.listdir(STATIC_IMAGE_FOLDER),textList),
 		)
 
 @app.route(PREFIX + '/words', methods=['GET'])
@@ -311,9 +322,26 @@ def get_word_position():
 def page():
 	image = request.args.get('image').strip()
 	language = request.args.get('language', 'hindi').strip()
-	type=request.args.get('type', 'Printed').strip()
-
-	if int(image.strip().split('.')[0]) > 1000 or language == 'dipti':
+	imageType=request.args.get('imageType', 'Printed').strip()
+	max=get_NumberOfImages(language=language,imageType=imageType)
+	nextImage=0;
+	prevImage=0;
+	imageBaseName=basename(image)
+	imageNumber=int(imageBaseName.strip().split('.')[0])
+	if imageNumber>1 and (imageNumber!=PRINTEDIMAGECOUNT+1):
+		prevImage=imageNumber-1
+	if imageNumber<max:
+		nextImage=imageNumber+1
+	# return render_template(
+	# 		'page.html',
+	# 		image=image,
+	# 		text="text",
+	# 		language=language,
+	# 		imageType=imageType,
+	# 		prevImage=prevImage,
+	# 		nextImage=nextImage,
+	# 	)
+	if int(imageNumber> 1000) or language == 'dipti':
 		# either the images are in curated category or language belongs to dipti
 		print('hello')
 		text = open(join(STATIC_LAYOUT_FOLDER, language, image.replace('jpg', 'json'))).read().strip()
@@ -324,6 +352,9 @@ def page():
 			text=text,
 			type=type,
 			language=language,
+			imageType=imageType,
+			prevImage=prevImage,
+			nextImage=nextImage,
 		)
 	image = join(STATIC_IMAGE_FOLDER, language, image)
 	print(image)
@@ -364,7 +395,9 @@ def page():
 		image=basename(image),
 		text=text,
 		language=language,
-		type=type,
+		imageType=imageType,
+		prevImage=prevImage,
+		nextImage=nextImage,
 	)
 
 

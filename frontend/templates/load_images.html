@@ -1,16 +1,16 @@
 
 <div class="container">
 <button type="button"
-class="btn btn-primary  w-100 {{class}}"
+class="btn btn-primary  w-100 {{class}} languageBar"
 data-toggle="collapse"
-data-target="#{{type}}"
+data-target="#{{imageType}}"
 aria-expanded="true"
 >
 
-<h4 class="text-center">Select {{type}} image</h4>
+<h3 class="text-center">Select {{imageType}} image</h3>
 </button>
-<div id="{{type}}" class="collapse {{show}}" >
-  <div class=" card-body">
+<div id="{{imageType}}" class="collapse {{show}}" >
+  <div class="outer">
     {% for image in temp_imageList %}
     {% include "image_block.html" %}
     {% endfor %}
