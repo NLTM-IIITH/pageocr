@@ -207,7 +207,7 @@ def index():
 	
 	return render_template(
 		'index.html',
-		language_list=zip(os.listdir(STATIC_IMAGE_FOLDER),textList),
+		language_list=zip(sorted(os.listdir(STATIC_IMAGE_FOLDER)),textList),
 	)
 
 
@@ -232,7 +232,7 @@ def images():
 			language=language,
 			image_list=get_image_list(language),
 			ravi_image_list=get_ravi_images(language),
-			language_list=zip(os.listdir(STATIC_IMAGE_FOLDER),textList),
+			language_list=zip(sorted(os.listdir(STATIC_IMAGE_FOLDER)),textList),
 		)
 
 @app.route(PREFIX + '/words', methods=['GET'])
@@ -341,7 +341,8 @@ def page():
 	# 		prevImage=prevImage,
 	# 		nextImage=nextImage,
 	# 	)
-	if int(imageNumber> 1000) or language == 'dipti':
+	# if int(imageNumber> 1000) or language == 'dipti':
+	try:
 		# either the images are in curated category or language belongs to dipti
 		print('hello')
 		text = open(join(STATIC_LAYOUT_FOLDER, language, image.replace('jpg', 'json'))).read().strip()
@@ -356,6 +357,8 @@ def page():
 			prevImage=prevImage,
 			nextImage=nextImage,
 		)
+	except:
+		print('No existing layout found.')
 	image = join(STATIC_IMAGE_FOLDER, language, image)
 	print(image)
 	r = requests.post(
