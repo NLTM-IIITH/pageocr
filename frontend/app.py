@@ -19,7 +19,8 @@ app.config.update(
 
 PREFIX = '/dococr'
 PRINTEDIMAGECOUNT=1000
-textList=["অসমিয়া","বঙালী","ગુજરાતી","हिंदी","ಕೆನಡಾ","മലയാളം","Manipuri","मराठी","(ଓଡ଼ିଆ","ਪੰਜਾਬੀ","தமிழ்","తెలుగు","اردو"]
+# textList=["অসমিয়া","বঙালী","ગુજરાતી","हिंदी","ಕೆನಡಾ","മലയാളം","মণিপুরী","मराठी","(ଓଡ଼ିଆ","ਪੰਜਾਬੀ","தமிழ்","తెలుగు","اردو"]
+textList=["অসমিয়া","বঙালী","ગુજરાતી","हिंदी","ಕೆನಡಾ","മലയാളം","মণিপুরী","मराठी","(ଓଡ଼ିଆ","ਪੰਜਾਬੀ","தமிழ்","తెలుగు"]
 def get_NumberOfImages(language: str,imageType: str) -> int:
 	print(f'getting all the images for language: {language}')
 	path = join(STATIC_IMAGE_FOLDER, language)
