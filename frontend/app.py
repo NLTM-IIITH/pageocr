@@ -152,9 +152,10 @@ def demo_page():
 	language = request.form.get('language', 'hindi')
 	print(image.filename)
 	#commented below line by Vineet
-	#image_folder = "/home/krishna/pageocr/frontend/static/images/demo"
+	image_folder = "/home/krishna/pageocr/frontend/static/demo/images"
+	layout_folder = "/home/krishna/pageocr/frontend/static/demo/layouts"
 	#added below line by Vineet
-	image_folder = "/static/images/demo"
+	# image_folder = "/static/images/demo"
 	image_path = join(image_folder, image.filename)
 	try:
 		os.system('rm {}'.format(image_path))
@@ -168,7 +169,7 @@ def demo_page():
 		headers={},
 		data={
 			'language': language,
-			'version': 'v2_robust' if language == 'hindi' else 'v3_robust'
+			'version': 'v4_robust'
 		},
 		files=[
 			(
@@ -183,8 +184,8 @@ def demo_page():
 	)
 	print(r.status_code)
 	layout_location = join(
-		STATIC_LAYOUT_FOLDER,
-		f'demo/{basename(image).split(".")[0]}.json'
+		layout_folder,
+		f'{basename(image).split(".")[0]}.json'
 	)
 	with open(layout_location, 'w+', encoding='utf-8') as f:
 		json.dump(
@@ -290,12 +291,19 @@ def get_word_position():
 	language = request.args.get('language', 'hindi').strip()
 	start = int(request.args.get('start').strip())
 	end = int(request.args.get('end').strip())
-	image_location = join(STATIC_IMAGE_FOLDER, language, image)
+	demo =  request.args.get('demo', False)
+	if demo:
+		image_location = join("/home/krishna/pageocr/frontend/static/demo/images", image)
+	else:
+		image_location = join(STATIC_IMAGE_FOLDER, language, image)
 	img = Image.open(image_location)
 	width, height = img.width, img.height
 	wratio = 350 / width
 	hratio = 600 / height
-	json_location = join(STATIC_LAYOUT_FOLDER, language, image.replace('jpg','json'))
+	if demo:
+		json_location = join("/home/krishna/pageocr/frontend/static/demo/layouts", image.replace('jpg', 'json'))
+	else:
+		json_location = join(STATIC_LAYOUT_FOLDER, language, image.replace('jpg','json'))
 	a = json.load(open(json_location, 'r'))
 	line, start, end = get_coordinates(a['text'], start, end)
 	print(line, start, end)

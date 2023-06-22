@@ -43,7 +43,8 @@
               "image": "{{ image }}",
               "language": "demo",
               "start": start,
-              "end": end
+              "end": end,
+              "demo": true
             },
             success: function(result) {
               console.log(result);
@@ -87,7 +88,7 @@
     <div class="row">
       <div class="col-6">
         <center>
-          <img class="img-responsive d-none" id="image" src="/dococr/{{ url_for('static', filename='images/demo/'+'/'+image) }}" alt="" width="350">
+          <img class="img-responsive d-none" id="image" src="/dococr/{{ url_for('static', filename='demo/images/'+'/'+image) }}" alt="" width="350">
           <canvas id="mycanvas" width="350" height="600" style="border: 1px solid black;"></canvas>
         </center>
       </div>

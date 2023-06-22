@@ -17,7 +17,7 @@ app = FastAPI(
 async def perform_page_level_ocr(
 	image: UploadFile = File(...),
 	language: Optional[str] = Form('hindi'),
-	version: Optional[str] = Form('v4_robust'),
+	version: Optional[str] = Form('v4'),
 	modality: Optional[str] = Form('printed'),
 	layout_model: Optional[str] = Form('v2_doctr')
 ):
