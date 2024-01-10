@@ -17,19 +17,33 @@ app = FastAPI(
 async def perform_page_level_ocr(
 	image: UploadFile = File(...),
 	language: Optional[str] = Form('hindi'),
-	version: Optional[str] = Form('v4'),
+	version: Optional[str] = Form('v4_robust'),
 	modality: Optional[str] = Form('printed'),
-	layout_model: Optional[str] = Form('v2_doctr')
+	layout_model: Optional[str] = Form('v2_doctr'),
+	postprocess: Optional[bool] = Form(False),
 ):
-	print('hello')
+	print(language, version, modality, layout_model)
 	image_path = save_uploaded_image(image)
+	img = Image.open(image_path)
 	print(f'Saved the image at {image_path}')
-	regions = call_layout_parser(image_path, layout_model)
+	# regions = call_layout_parser(image_path, layout_model, language)
+	if modality == 'handwritten' or modality == 'scenetext' or layout_model == 'none':
+		regions = [{
+			'bounding_box': {'x': 1, 'y': 1, 'w': img.width-1, 'h': img.height-1},
+			'order': -1,
+			'label': '',
+			'line': 1
+		}]
+	else:
+		regions = call_layout_parser(image_path, layout_model, language)
 	print(f'{len(regions)} word regions detected by layout-parser')
 	path = crop_regions(image_path, regions)
 	print(f'Saved the cropped word images at: {path}')
-	ocr_output = perform_ocr(path, language, version, modality)
-	return format_ocr_output(ocr_output, regions)
+	ocr_output = perform_ocr(path, language, version, modality, postprocess)
+	print(ocr_output)
+	ret = format_ocr_output(ocr_output, regions)
+	print(ret)
+	return ret
 
 
 @app.post('/load_ocr', tags=['Helper'])

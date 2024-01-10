@@ -18,4 +18,14 @@ LANGUAGES = {
 	'manipuri': 'mni',
 	'oriya': 'ori',
 	'urdu': 'ur',
+
+	'bodo': 'brx',
+	'dogri': 'doi',
+	'kashmiri': 'ks',
+	'konkani': 'kok',
+	'maithili': 'mai',
+	'nepali': 'ne',
+	'sanskrit': 'sa',
+	'santali': 'sat',
+	'sindhi': 'sd'
 }

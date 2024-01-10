@@ -14,7 +14,7 @@ from .config import IMAGE_FOLDER, LANGUAGES
 from .models import PageOCRResponse, Region
 
 
-def call_layout_parser(image_path: str, model: str = 'v2_doctr') -> List[Dict[str, int]]:
+def call_layout_parser(image_path: str, model: str = 'v2_doctr', language: str = 'english') -> List[Dict[str, int]]:
 	"""
 	function to the call the layout parser API
 
@@ -35,11 +35,15 @@ def call_layout_parser(image_path: str, model: str = 'v2_doctr') -> List[Dict[st
 		url,
 		headers={},
 		data={
-			'model': model
+			'model': model,
+			'language': language,
 		},
 		files=files
 	)
-	return response.json()[0]['regions']
+	try:
+		return response.json()[0]['regions']
+	except:
+		return []
 
 
 def crop_regions(image_path: str, regions: List[Dict[str, Any]]) -> str:
@@ -58,6 +62,8 @@ def crop_regions(image_path: str, regions: List[Dict[str, Any]]) -> str:
 	img = Image.open(image_path)
 	bboxes = [i['bounding_box'] for i in regions]
 	bboxes = [(i['x'], i['y'], i['x']+i['w'], i['y']+i['h']) for i in bboxes]
+	# if modality == 'handwritten':
+	# 	bboxes = [(1,1,img.width-2,img.height-2)]
 	for idx, bbox in enumerate(bboxes):
 		with open(join(ret, '{}.jpg'.format(idx)), 'wb+') as f:
 			img.crop(bbox).save(f)
@@ -73,7 +79,37 @@ def load_model(language: str):
 	return response.ok
 
 
-def perform_ocr(path: str, language: str, version: str, modality: str = 'printed') -> List[str]:
+def perform_postprocess(ocr_output):
+	lexicon = open(
+		'/home/krishna/pageocr/backend/loksabha_postprocess/lexicon.txt',
+		'r',
+		encoding='utf-8'
+	).read().strip().split('\n')
+	print(f'lexicon has {len(lexicon)} characters')
+	vocabulary = open(
+		'/home/krishna/pageocr/backend/loksabha_postprocess/vocabulary.txt',
+		'r',
+		encoding='utf-8'
+	).read().strip().split('\n')
+	print(f'vocab has {len(vocabulary)} words')
+	request = {
+		'lexicon': lexicon,
+		'vocabulary': vocabulary,
+		'language': 'en',
+		'words': ocr_output,
+	}
+	url = "https://ilocr.iiit.ac.in/ocr/newpostprocess"
+	response = requests.post(url, headers={
+		'Content-Type': 'application/json'
+	}, data=json.dumps(request))
+	print(response.status_code)
+	if not response.ok:
+		print(response.text)
+	ret = response.json()
+	return ret
+
+
+def perform_ocr(path: str, language: str, version: str, modality: str = 'printed', postprocess: bool = False) -> List[str]:
 	"""
 	call the ocr API on all the images inside the path folder
 
@@ -92,12 +128,23 @@ def perform_ocr(path: str, language: str, version: str, modality: str = 'printed
 		'language': LANGUAGES[language],
 		'version': version,
 	}
+	if postprocess:
+		ocr_request.update({
+			'meta': {
+				'include_probability': True
+			}
+		})
 	url = "https://ilocr.iiit.ac.in/ocr/infer"
 	response = requests.post(url, headers={
 		'Content-Type': 'application/json'
 	}, data=json.dumps(ocr_request))
 	ret = response.json()
-	ret = [i['text'] for i in ret]
+	if postprocess:
+		print('performing postprocessing')
+		ret = perform_postprocess(ret)
+		ret = [i['text'][0] for i in ret]
+	else:
+		ret = [i['text'] for i in ret]
 	return ret
 
 
@@ -110,21 +157,25 @@ def format_ocr_output(ocr: List[str], regions: List[Dict[str, Any]]) -> str:
 	@returns the final page level ocr output with appropriate '\n'
 	"""
 	ret = []
-	lines = [i['line'] for i in regions]
-	assert len(lines) == len(ocr)
-	prev_line = lines[0]
-	tmp_line = []
-	for line, text in zip(lines, ocr):
-		if line == prev_line:
-			tmp_line.append(text)
-		else:
-			prev_line = line
-			ret.append(' '.join(tmp_line))
-			tmp_line = [text]
-	# this is so that the last line is also included in the ret
-	ret.append(' '.join(tmp_line))
-	ret = [i.strip() for i in ret]
-	ret = '\n'.join(ret).strip()
+	try:
+		lines = [i['line'] for i in regions]
+		assert len(lines) == len(ocr)
+		prev_line = lines[0]
+		tmp_line = []
+		for line, text in zip(lines, ocr):
+			if line == prev_line:
+				tmp_line.append(text)
+			else:
+				prev_line = line
+				ret.append(' '.join(tmp_line))
+				tmp_line = [text]
+		# this is so that the last line is also included in the ret
+		ret.append(' '.join(tmp_line))
+		ret = [i.strip() for i in ret]
+		ret = '\n'.join(ret).strip()
+	except Exception as e:
+		print(e)
+		ret = ''
 	regions = [Region(**i) for i in regions]
 	return PageOCRResponse(
 		text=ret,
