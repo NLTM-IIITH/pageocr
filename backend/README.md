@@ -33,27 +33,6 @@ python main.py
 ```
 * To access the swagger UI go to [http://127.0.0.1:8881](http://127.0.0.1:8881)
 
-### Starting the Frontend Flask server (Optional)
-
-* In a new terminal, Activate the previously created virtualenv
-```
-source pageocr-venv/bin/activate
-```
-* go to frontend folder
-```
-cd pageocr/frontend
-```
-* Install the required python packages
-```
-pip install -r requirements.txt
-```
-* Simply run the app.py file
-```
-python app.py
-```
-* To access the swagger UI go to [http://127.0.0.1:5500](http://127.0.0.1:5500)
-
-
 ## Authors
 
 Krishna Tulsyan
