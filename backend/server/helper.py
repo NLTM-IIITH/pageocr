@@ -59,7 +59,7 @@ def crop_regions(image_path: str, regions: List[Dict[str, Any]]) -> str:
 		basename(image_path).strip().split('.')[0],
 	)
 	os.makedirs(ret)
-	img = Image.open(image_path)
+	img = Image.open(image_path).convert('RGB')
 	bboxes = [i['bounding_box'] for i in regions]
 	bboxes = [(i['x'], i['y'], i['x']+i['w'], i['y']+i['h']) for i in bboxes]
 	# if modality == 'handwritten':

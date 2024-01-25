@@ -26,16 +26,16 @@ async def perform_page_level_ocr(
 	image_path = save_uploaded_image(image)
 	img = Image.open(image_path)
 	print(f'Saved the image at {image_path}')
-	# regions = call_layout_parser(image_path, layout_model, language)
-	if modality == 'handwritten' or modality == 'scenetext' or layout_model == 'none':
-		regions = [{
-			'bounding_box': {'x': 1, 'y': 1, 'w': img.width-1, 'h': img.height-1},
-			'order': -1,
-			'label': '',
-			'line': 1
-		}]
-	else:
-		regions = call_layout_parser(image_path, layout_model, language)
+	regions = call_layout_parser(image_path, layout_model, language)
+	# if modality == 'handwritten' or modality == 'scenetext' or layout_model == 'none':
+	# 	regions = [{
+	# 		'bounding_box': {'x': 1, 'y': 1, 'w': img.width-1, 'h': img.height-1},
+	# 		'order': -1,
+	# 		'label': '',
+	# 		'line': 1
+	# 	}]
+	# else:
+	# 	regions = call_layout_parser(image_path, layout_model, language)
 	print(f'{len(regions)} word regions detected by layout-parser')
 	path = crop_regions(image_path, regions)
 	print(f'Saved the cropped word images at: {path}')
