@@ -121,7 +121,7 @@ def perform_ocr(path: str, language: str, version: str, modality: str = 'printed
 	a = sorted(a, key=lambda x:int(x.strip().split('.')[0]))
 	a = [join(path, i) for i in a if i.endswith('jpg')]
 	a = [base64.b64encode(open(i, 'rb').read()).decode() for i in a]
-	print(list(map(len, a)))
+	# print(list(map(len, a)))
 	ocr_request = {
 		'imageContent': a,
 		'modality': modality,

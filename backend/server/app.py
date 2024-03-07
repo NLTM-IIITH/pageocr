@@ -40,9 +40,9 @@ async def perform_page_level_ocr(
 	path = crop_regions(image_path, regions)
 	print(f'Saved the cropped word images at: {path}')
 	ocr_output = perform_ocr(path, language, version, modality, postprocess)
-	print(ocr_output)
+	print('Got the OCR Output')
 	ret = format_ocr_output(ocr_output, regions)
-	print(ret)
+	print('Formatted the OCR Output')
 	return ret
 
 
